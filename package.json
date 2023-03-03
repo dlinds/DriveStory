@@ -10,8 +10,11 @@
     "test": "jest"
   },
   "dependencies": {
+    "@google-cloud/text-to-speech": "^4.2.1",
     "react": "18.2.0",
-    "react-native": "0.71.3"
+    "react-native": "0.71.3",
+    "react-native-fs": "^2.20.0",
+    "react-native-sound": "^0.11.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
