@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Voice, {
   SpeechRecognizedEvent,
   SpeechResultsEvent,
@@ -6,8 +6,12 @@ import Voice, {
 } from '@react-native-voice/voice';
 import {Pressable, StyleSheet, Text} from 'react-native';
 
-export const GetSpeech = () => {
-  const [result, setResult] = useState('');
+interface GetSpeechProps {
+  readonly getPromptCallback: (prompt: string) => void;
+}
+
+export const GetSpeech = ({getPromptCallback}: GetSpeechProps) => {
+  const [result, setResult] = useState<string>('');
 
   const [error, setError] = useState('');
 
@@ -36,22 +40,34 @@ export const GetSpeech = () => {
     }
   };
 
-  console.log({result});
+  useEffect(() => {
+    getPromptCallback(result);
+  }, [result]);
 
   return (
     <Pressable
       style={styles.pressable}
       onPress={() => (isRecording ? stopRecording() : startRecording())}>
-      <Text>{isRecording ? 'Stop' : 'Start'}</Text>
-      <Text>result: {result as string}</Text>
-      <Text>error: {error as string}</Text>
+      <Text style={styles.pressableText}>
+        {isRecording ? 'STOP' : 'STORY TIME'}
+      </Text>
     </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
   pressable: {
-    height: 100,
-    width: 100,
+    height: 250,
+    width: 250,
+    borderRadius: 10,
+    backgroundColor: 'hotpink',
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 10,
+  },
+  pressableText: {
+    fontSize: 50,
+    letterSpacing: 5,
+    textAlign: 'center',
   },
 });
