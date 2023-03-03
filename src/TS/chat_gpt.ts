@@ -1,11 +1,47 @@
 import {CHAT_GPT} from '../../env';
-export const OpenAPIRequest = (prompt: string) => {
+import {Configuration, OpenAIApi} from 'openai';
+import openai from './config';
+
+// interface queryOpenAiProps {
+//   readonly prompt: string;
+//   readonly max_tokens?: number;
+//   readonly temperature?: any;
+//   readonly model?: string;
+// }
+
+// export const models = {
+//   davinci3: 'text-davinci-003',
+// };
+
+// export const queryOpenAi = async ({
+//   prompt,
+//   max_tokens = 500,
+//   temperature = undefined,
+//   model = models.davinci3,
+// }: queryOpenAiProps) => {
+//   try {
+//     const resp = await openai.createCompletion({
+//       model,
+//       prompt,
+//       max_tokens,
+//       temperature,
+//     });
+
+//     return resp;
+//   } catch (e) {
+//     console.error(e);
+//     throw e;
+//   }
+// };
+
+export const OpenAPIRequest = async (prompt: string): Promise<string> => {
+  console.log({promptInOpenAI: prompt});
   const myHeaders = new Headers();
   myHeaders.append('Content-Type', 'application/json');
   myHeaders.append('Authorization', `Bearer ${CHAT_GPT}`);
 
   const raw = JSON.stringify({
-    prompt: prompt,
+    prompt: `Tell me a childrens story that includes the topics: ${prompt}`,
   });
 
   const requestOptions = {
@@ -15,11 +51,18 @@ export const OpenAPIRequest = (prompt: string) => {
     redirect: 'follow',
   };
 
-  fetch(
+  let resultPrompt = '';
+
+  await fetch(
     'https://api.openai.com/v1/engines/text-davinci-002/completions',
     requestOptions,
   )
     .then(response => response.text())
-    .then(result => console.log(result))
+    .then(result => {
+      resultPrompt = result;
+      return result;
+    })
     .catch(error => console.log('error', error));
+  console.log({resultPrompt});
+  return resultPrompt;
 };

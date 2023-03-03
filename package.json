@@ -12,6 +12,7 @@
   "dependencies": {
     "@google-cloud/text-to-speech": "^4.2.1",
     "@react-native-voice/voice": "3.2.4",
+    "openai": "^3.2.1",
     "react": "18.2.0",
     "react-native": "0.71.3",
     "react-native-config": "^1.5.0",

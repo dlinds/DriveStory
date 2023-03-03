@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Text, Pressable} from 'react-native';
 import Sound from 'react-native-sound';
+import {OpenAPIRequest} from '../TS/chat_gpt';
 import {handleTextToSpeech} from '../TS/google_voice';
 import {GetSpeech} from './GetSpeech';
 
@@ -26,11 +27,23 @@ export const Body = () => {
     });
   };
 
-  const handleAskForParameters = async (prompt: string) => {
+  const handleCallGoogle = async (prompt: string) => {
     const audioPathBack = await handleTextToSpeech(prompt).then(res => res);
     setAudioPath(audioPathBack);
-    playMusic(audioPath); //call chatGPT here
+    playMusic(audioPath);
   };
+
+  const [story, setStory] = useState('');
+
+  const handleAskForParameters = async (prompt: string) => {
+    const storyResult = await OpenAPIRequest(prompt);
+    setStory(storyResult);
+    console.log({storyResult});
+  };
+
+  useEffect(() => {
+    handleCallGoogle(story);
+  }, [story]);
 
   useEffect(() => {
     setTimeout(() => {
