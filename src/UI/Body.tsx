@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Text, Pressable} from 'react-native';
 import Sound from 'react-native-sound';
-import {OpenAPIRequest} from '../TS/chat_gpt';
+import {OpenAPIRequest, queryOpenAi} from '../TS/chat_gpt';
 import {handleTextToSpeech} from '../TS/google_voice';
 import {GetSpeech} from './GetSpeech';
 
@@ -27,30 +27,33 @@ export const Body = () => {
     });
   };
 
-  const handleCallGoogle = async (prompt: string) => {
-    const audioPathBack = await handleTextToSpeech(prompt).then(res => res);
+  const handleCallGoogle = async (story: string) => {
+    const audioPathBack = await handleTextToSpeech(story).then(res => res);
     setAudioPath(audioPathBack);
     playMusic(audioPath);
   };
 
+  const [hasInitiated, setHasInitiated] = useState(false);
+
   const [story, setStory] = useState('');
 
   const handleAskForParameters = async (prompt: string) => {
-    const storyResult = await OpenAPIRequest(prompt);
-    setStory(storyResult);
-    console.log({storyResult});
+    const storyResult = (await queryOpenAi({prompt})).data.choices[0].text;
+    setStory(storyResult ? storyResult : '');
+    setHasInitiated(!!storyResult);
   };
 
   useEffect(() => {
-    handleCallGoogle(story);
+    hasInitiated && handleCallGoogle(story);
   }, [story]);
 
   useEffect(() => {
-    setTimeout(() => {
-      if (audioPath !== '') {
-        playMusic(audioPath);
-      }
-    }, 5000);
+    hasInitiated &&
+      setTimeout(() => {
+        if (audioPath !== '') {
+          playMusic(audioPath);
+        }
+      }, 5000);
   }, [audioPath]);
 
   return (

@@ -2,37 +2,38 @@ import {CHAT_GPT} from '../../env';
 import {Configuration, OpenAIApi} from 'openai';
 import openai from './config';
 
-// interface queryOpenAiProps {
-//   readonly prompt: string;
-//   readonly max_tokens?: number;
-//   readonly temperature?: any;
-//   readonly model?: string;
-// }
+interface queryOpenAiProps {
+  readonly prompt: string;
+  readonly max_tokens?: number;
+  readonly temperature?: any;
+  readonly model?: string;
+}
 
-// export const models = {
-//   davinci3: 'text-davinci-003',
-// };
+export const models = {
+  davinci3: 'text-davinci-003',
+};
 
-// export const queryOpenAi = async ({
-//   prompt,
-//   max_tokens = 500,
-//   temperature = undefined,
-//   model = models.davinci3,
-// }: queryOpenAiProps) => {
-//   try {
-//     const resp = await openai.createCompletion({
-//       model,
-//       prompt,
-//       max_tokens,
-//       temperature,
-//     });
+export const queryOpenAi = async ({
+  prompt,
+  max_tokens = 500,
+  temperature = undefined,
+  model = models.davinci3,
+}: queryOpenAiProps) => {
+  try {
+    const resp = await openai.createCompletion({
+      model,
+      prompt: `Tell me a childrens story that includes the topics: ${prompt}`,
+      max_tokens,
+      temperature,
+    });
 
-//     return resp;
-//   } catch (e) {
-//     console.error(e);
-//     throw e;
-//   }
-// };
+    console.log({resp});
+    return resp;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
 
 export const OpenAPIRequest = async (prompt: string): Promise<string> => {
   console.log({promptInOpenAI: prompt});
@@ -59,7 +60,8 @@ export const OpenAPIRequest = async (prompt: string): Promise<string> => {
   )
     .then(response => response.text())
     .then(result => {
-      resultPrompt = result;
+      resultPrompt = JSON.parse(result).choices;
+      console.log({resultPrompt});
       return result;
     })
     .catch(error => console.log('error', error));
