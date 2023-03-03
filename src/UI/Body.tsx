@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text, Pressable} from 'react-native';
 import Sound from 'react-native-sound';
+import {GetSpeech} from './GetSpeech';
 
 const audio = {
   title: 'mp3 via require()',
@@ -43,6 +44,9 @@ export const Body = () => {
       <Pressable style={styles.button} onPress={() => playSound(audio)}>
         <Text style={styles.buttonText}>{isPlaying ? 'Stop' : 'Start'}</Text>
       </Pressable>
+      <View style={styles.getSpeech}>
+        <GetSpeech />
+      </View>
     </View>
   );
 };
@@ -65,5 +69,11 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 50,
     color: 'black',
+  },
+  getSpeech: {
+    marginTop: 100,
+    backgroundColor: 'black',
+    height: 100,
+    width: 100,
   },
 });
