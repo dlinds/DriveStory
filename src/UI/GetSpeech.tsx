@@ -15,7 +15,7 @@ export const GetSpeech = () => {
 
   Voice.onSpeechStart = () => setIsRecording(true);
   Voice.onSpeechEnd = () => setIsRecording(false);
-  Voice.onSpeechError = (err: any) => setError(err.error);
+  Voice.onSpeechError = (err: any) => setError(err.error.message);
   Voice.onSpeechResults = (res: any) => setResult(res.value[0]);
 
   const startRecording = async () => {
