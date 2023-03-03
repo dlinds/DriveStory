@@ -11,7 +11,7 @@ export const Header = () => {
         <Text style={styles.headerText}>Saved</Text>
       </View>
       <View style={styles.headerIcon}>
-        <Text style={styles.headerText}>Account</Text>
+        <Text style={styles.headerText}>Settings</Text>
       </View>
     </View>
   );
