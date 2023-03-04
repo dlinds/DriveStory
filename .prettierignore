@@ -1,0 +1,12 @@
+.git/
+.github/
+.vscode/
+android/
+dist/
+ios/
+node_modules/
+package-lock.json
+package.json
+patches/
+yarn.lock
+vendor/

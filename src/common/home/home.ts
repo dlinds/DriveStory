@@ -1,6 +1,6 @@
-import RNFS from 'react-native-fs';
-import Config from 'react-native-config';
-import {Configuration, OpenAIApi} from 'openai';
+import RNFS from "react-native-fs";
+import Config from "react-native-config";
+import { Configuration, OpenAIApi } from "openai";
 
 interface queryOpenAiProps {
   readonly prompt: string;
@@ -10,7 +10,7 @@ interface queryOpenAiProps {
 }
 
 export const models = {
-  davinci3: 'text-davinci-003',
+  davinci3: "text-davinci-003",
 };
 
 const configuration = new Configuration({
@@ -22,7 +22,7 @@ export const openAiConfig = new OpenAIApi(configuration);
 
 export const createFile = async (path: string, data: string) => {
   try {
-    return await RNFS.writeFile(path, data, 'base64');
+    return await RNFS.writeFile(path, data, "base64");
   } catch (err) {
     console.warn(err);
   }
@@ -32,41 +32,40 @@ export const createFile = async (path: string, data: string) => {
 
 export const handleTextToSpeech = async (input: string): Promise<string> => {
   const key = Config.GOOGLE_API;
-  console.log({key});
   const path = `${RNFS.DocumentDirectoryPath}/${Date.now()}.mp3`;
   const myHeaders = new Headers();
-  myHeaders.append('Content-Type', 'application/json');
+  myHeaders.append("Content-Type", "application/json");
 
   const raw = JSON.stringify({
     input: {
       text: input,
     },
     voice: {
-      languageCode: 'en-gb',
-      name: 'en-GB-Neural2-F',
-      ssmlGender: 'FEMALE',
+      languageCode: "en-gb",
+      name: "en-GB-Neural2-F",
+      ssmlGender: "FEMALE",
     },
     audioConfig: {
-      audioEncoding: 'MP3',
+      audioEncoding: "MP3",
     },
   });
 
   const requestOptions = {
-    method: 'POST',
+    method: "POST",
     headers: myHeaders,
     body: raw,
-    redirect: 'follow',
+    redirect: "follow",
   };
 
   fetch(
     `https://texttospeech.googleapis.com/v1/text:synthesize?key=${key}`,
-    requestOptions,
+    requestOptions
   )
-    .then(response => response.text())
-    .then(async result => {
+    .then((response) => response.text())
+    .then(async (result) => {
       await createFile(path, result);
     })
-    .catch(error => console.log('error', error));
+    .catch((error) => console.log("error", error));
 
   return path;
 };
@@ -87,7 +86,7 @@ export const queryOpenAi = async ({
 
     return resp;
   } catch (e) {
-    console.error(e);
+    console.error({ queryOpenAi: e });
     throw e;
   }
 };

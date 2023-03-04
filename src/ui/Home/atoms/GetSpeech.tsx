@@ -1,21 +1,21 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from "react";
 import Voice, {
   SpeechRecognizedEvent,
   SpeechResultsEvent,
   SpeechErrorEvent,
-} from '@react-native-voice/voice';
-import {Pressable, StyleSheet, Text} from 'react-native';
+} from "@react-native-voice/voice";
+import { Pressable, StyleSheet, Text } from "react-native";
 
 interface GetSpeechProps {
   readonly getPromptCallback: (prompt: string) => void;
 }
 
-export const GetSpeech = ({getPromptCallback}: GetSpeechProps) => {
-  const [result, setResult] = useState<string>('');
+export const GetSpeech = ({ getPromptCallback }: GetSpeechProps) => {
+  const [result, setResult] = useState<string>("");
 
   const [didRecord, setDidRecord] = useState(false);
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const [isRecording, setIsRecording] = useState(false);
 
@@ -29,9 +29,9 @@ export const GetSpeech = ({getPromptCallback}: GetSpeechProps) => {
 
   const startRecording = async () => {
     try {
-      await Voice.start('en-us');
+      await Voice.start("en-us");
     } catch (error: any) {
-      console.log({error});
+      console.log({ error });
       setError(JSON.stringify(error));
     }
   };
@@ -40,7 +40,7 @@ export const GetSpeech = ({getPromptCallback}: GetSpeechProps) => {
     try {
       await Voice.stop();
     } catch (error: any) {
-      console.log({error});
+      console.log({ error });
       setError(JSON.stringify(error));
     }
   };
@@ -52,9 +52,10 @@ export const GetSpeech = ({getPromptCallback}: GetSpeechProps) => {
   return (
     <Pressable
       style={styles.pressable}
-      onPress={() => (isRecording ? stopRecording() : startRecording())}>
+      onPress={() => (isRecording ? stopRecording() : startRecording())}
+    >
       <Text style={styles.pressableText}>
-        {isRecording ? 'STOP' : 'STORY TIME'}
+        {isRecording ? "STOP" : "STORY TIME"}
       </Text>
     </Pressable>
   );
@@ -65,14 +66,14 @@ const styles = StyleSheet.create({
     height: 250,
     width: 250,
     borderRadius: 10,
-    backgroundColor: 'hotpink',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "hotpink",
+    justifyContent: "center",
+    alignItems: "center",
     elevation: 10,
   },
   pressableText: {
     fontSize: 50,
     letterSpacing: 5,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });

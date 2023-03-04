@@ -1,5 +1,5 @@
-import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import React from "react";
+import { StyleSheet, View, Text } from "react-native";
 
 export const Header = () => {
   return (
@@ -20,21 +20,21 @@ export const Header = () => {
 const styles = StyleSheet.create({
   container: {
     marginTop: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    backgroundColor: '#22222',
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    backgroundColor: "#22222",
   },
   headerIcon: {
     padding: 15,
     flex: 1,
     borderWidth: 1,
-    borderColor: 'darkgray',
+    borderColor: "darkgray",
     marginHorizontal: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'lightgray',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "lightgray",
   },
   headerText: {
-    color: '#222222',
+    color: "#222222",
   },
 });
