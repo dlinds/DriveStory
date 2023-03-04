@@ -10,7 +10,7 @@ export const Body = () => {
 
   const [audioPath, setAudioPath] = useState('');
 
-  const playMusic = (path: string) => {
+  const playStory = (path: string) => {
     const speech = new Sound(audioPath, '', error => {
       if (error) {
         console.warn('failed to load the sound', error);
@@ -30,7 +30,6 @@ export const Body = () => {
   const handleCallGoogle = async (story: string) => {
     const audioPathBack = await handleTextToSpeech(story).then(res => res);
     setAudioPath(audioPathBack);
-    playMusic(audioPath);
   };
 
   const [hasInitiated, setHasInitiated] = useState(false);
@@ -51,9 +50,9 @@ export const Body = () => {
     hasInitiated &&
       setTimeout(() => {
         if (audioPath !== '') {
-          playMusic(audioPath);
+          playStory(audioPath);
         }
-      }, 5000);
+      }, 1000);
   }, [audioPath]);
 
   return (

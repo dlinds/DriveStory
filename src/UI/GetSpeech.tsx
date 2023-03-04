@@ -13,12 +13,17 @@ interface GetSpeechProps {
 export const GetSpeech = ({getPromptCallback}: GetSpeechProps) => {
   const [result, setResult] = useState<string>('');
 
+  const [didRecord, setDidRecord] = useState(false);
+
   const [error, setError] = useState('');
 
   const [isRecording, setIsRecording] = useState(false);
 
   Voice.onSpeechStart = () => setIsRecording(true);
-  Voice.onSpeechEnd = () => setIsRecording(false);
+  Voice.onSpeechEnd = () => {
+    setIsRecording(false);
+    setDidRecord(true);
+  };
   Voice.onSpeechError = (err: any) => setError(err.error.message);
   Voice.onSpeechResults = (res: any) => setResult(res.value[0]);
 

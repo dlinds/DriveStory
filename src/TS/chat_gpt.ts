@@ -22,7 +22,7 @@ export const queryOpenAi = async ({
   try {
     const resp = await openai.createCompletion({
       model,
-      prompt: `Tell me a childrens story that includes the topics: ${prompt}`,
+      prompt: `Tell me a five sentence childrens story that includes the topics: ${prompt}`,
       max_tokens,
       temperature,
     });

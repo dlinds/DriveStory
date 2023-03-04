@@ -6,7 +6,6 @@ import {Header} from './Header';
 export const Home = () => {
   return (
     <View style={styles.container}>
-      <Header />
       <Body />
     </View>
   );
