@@ -1,8 +1,24 @@
+import RNFS from 'react-native-fs';
 import Config from 'react-native-config';
-import {Platform} from 'react-native';
-import {GOOGLE_API} from '../../env';
-import Sound from 'react-native-sound';
-const RNFS = require('react-native-fs');
+import {Configuration, OpenAIApi} from 'openai';
+
+interface queryOpenAiProps {
+  readonly prompt: string;
+  readonly max_tokens?: number;
+  readonly temperature?: any;
+  readonly model?: string;
+}
+
+export const models = {
+  davinci3: 'text-davinci-003',
+};
+
+const configuration = new Configuration({
+  organization: Config.CHAT_GPT_ORG,
+  apiKey: Config.CHAT_GPT_KEY,
+});
+
+export const openAiConfig = new OpenAIApi(configuration);
 
 export const createFile = async (path: string, data: string) => {
   try {
@@ -15,7 +31,8 @@ export const createFile = async (path: string, data: string) => {
 };
 
 export const handleTextToSpeech = async (input: string): Promise<string> => {
-  const key = GOOGLE_API;
+  const key = Config.GOOGLE_API;
+  console.log({key});
   const path = `${RNFS.DocumentDirectoryPath}/${Date.now()}.mp3`;
   const myHeaders = new Headers();
   myHeaders.append('Content-Type', 'application/json');
@@ -54,19 +71,23 @@ export const handleTextToSpeech = async (input: string): Promise<string> => {
   return path;
 };
 
-export const playMusic = (music: string) => {
-  const speech = new Sound(music, '', error => {
-    if (error) {
-      console.warn('failed to load the sound', error);
-
-      return null;
-    }
-    speech.play(success => {
-      if (!success) {
-        console.warn('playback failed due to audio decoding errors');
-      }
+export const queryOpenAi = async ({
+  prompt,
+  max_tokens = 500,
+  temperature = undefined,
+  model = models.davinci3,
+}: queryOpenAiProps) => {
+  try {
+    const resp = await openAiConfig.createCompletion({
+      model,
+      prompt: `Tell me a five sentence childrens story that includes the topics: ${prompt}`,
+      max_tokens,
+      temperature,
     });
 
-    return null;
-  });
+    return resp;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
 };

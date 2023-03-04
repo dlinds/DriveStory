@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Text, Pressable} from 'react-native';
 import Sound from 'react-native-sound';
-import {OpenAPIRequest, queryOpenAi} from '../TS/chat_gpt';
-import {handleTextToSpeech} from '../TS/google_voice';
-import {GetSpeech} from './GetSpeech';
+import {queryOpenAi} from '../../../common/home/home';
+import {handleTextToSpeech} from '../../../common/home/home';
+import {GetSpeech} from '../atoms/GetSpeech';
 
 export const Body = () => {
   const [isPlaying, setIsPlaying] = useState(false);

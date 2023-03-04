@@ -1,7 +1,7 @@
 import React from 'react';
 import {Dimensions, SafeAreaView, ScrollView} from 'react-native';
 
-import {Home} from './src/UI/Home';
+import {Home} from './src/ui/Home/screens/Home';
 
 const App = (): JSX.Element => {
   return (
