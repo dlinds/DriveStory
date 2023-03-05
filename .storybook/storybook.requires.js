@@ -48,6 +48,7 @@ try {
 const getStories = () => {
   return {
     "./src/ui/atoms/button.stories.tsx": require("../src/ui/atoms/button.stories.tsx"),
+    "./src/ui/atoms/text_input.stories.tsx": require("../src/ui/atoms/text_input.stories.tsx"),
     "./src/ui/Home/atoms/get_speech.stories.tsx": require("../src/ui/Home/atoms/get_speech.stories.tsx"),
   };
 };
