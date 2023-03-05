@@ -34,3 +34,9 @@ export const Heading = {
     text: 'Heading',
   } as TypographyProps,
 }
+export const HeadingLarge = {
+  args: {
+    variant: 'headingLarge',
+    text: 'Heading Large',
+  } as TypographyProps,
+}

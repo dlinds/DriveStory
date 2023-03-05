@@ -6,52 +6,53 @@ import {
   addParameters,
   addArgsEnhancer,
   clearDecorators,
-} from '@storybook/react-native'
+} from "@storybook/react-native";
 
 global.STORIES = [
   {
-    titlePrefix: '',
-    directory: './src/ui',
-    files: '**/*.stories.?(ts|tsx|js|jsx)',
+    titlePrefix: "",
+    directory: "./src/ui",
+    files: "**/*.stories.?(ts|tsx|js|jsx)",
     importPathMatcher:
-      '^\\.[\\\\/](?:src\\/ui(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)\\/|\\/|$)(?!\\.)(?=.)[^/]*?\\.stories\\.(?:ts|tsx|js|jsx)?)$',
+      "^\\.[\\\\/](?:src\\/ui(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)\\/|\\/|$)(?!\\.)(?=.)[^/]*?\\.stories\\.(?:ts|tsx|js|jsx)?)$",
   },
-]
+];
 
-import '@storybook/addon-ondevice-controls/register'
-import '@storybook/addon-ondevice-actions/register'
+import "@storybook/addon-ondevice-controls/register";
+import "@storybook/addon-ondevice-actions/register";
 
-import { argsEnhancers } from '@storybook/addon-actions/dist/modern/preset/addArgs'
+import { argsEnhancers } from "@storybook/addon-actions/dist/modern/preset/addArgs";
 
-import { decorators, parameters } from './preview'
+import { decorators, parameters } from "./preview";
 
 if (decorators) {
   if (__DEV__) {
     // stops the warning from showing on every HMR
-    require('react-native').LogBox.ignoreLogs([
-      '`clearDecorators` is deprecated and will be removed in Storybook 7.0',
-    ])
+    require("react-native").LogBox.ignoreLogs([
+      "`clearDecorators` is deprecated and will be removed in Storybook 7.0",
+    ]);
   }
   // workaround for global decorators getting infinitely applied on HMR, see https://github.com/storybookjs/react-native/issues/185
-  clearDecorators()
-  decorators.forEach((decorator) => addDecorator(decorator))
+  clearDecorators();
+  decorators.forEach((decorator) => addDecorator(decorator));
 }
 
 if (parameters) {
-  addParameters(parameters)
+  addParameters(parameters);
 }
 
 try {
-  argsEnhancers.forEach((enhancer) => addArgsEnhancer(enhancer))
+  argsEnhancers.forEach((enhancer) => addArgsEnhancer(enhancer));
 } catch {}
 
 const getStories = () => {
   return {
-    './src/ui/_atoms/button.stories.tsx': require('../src/ui/_atoms/button.stories.tsx'),
-    './src/ui/_atoms/text_input.stories.tsx': require('../src/ui/_atoms/text_input.stories.tsx'),
-    './src/ui/_atoms/typography.stories.tsx': require('../src/ui/_atoms/typography.stories.tsx'),
-    './src/ui/Home/atoms/get_speech.stories.tsx': require('../src/ui/Home/atoms/get_speech.stories.tsx'),
-  }
-}
+    "./src/ui/_atoms/button.stories.tsx": require("../src/ui/_atoms/button.stories.tsx"),
+    "./src/ui/_atoms/logo.stories.tsx": require("../src/ui/_atoms/logo.stories.tsx"),
+    "./src/ui/_atoms/text_input.stories.tsx": require("../src/ui/_atoms/text_input.stories.tsx"),
+    "./src/ui/_atoms/typography.stories.tsx": require("../src/ui/_atoms/typography.stories.tsx"),
+    "./src/ui/Home/atoms/get_speech.stories.tsx": require("../src/ui/Home/atoms/get_speech.stories.tsx"),
+  };
+};
 
-configure(getStories, module, false)
+configure(getStories, module, false);

@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text } from 'react-native'
 import { scale } from '../../common/utilities'
 
-type TypographyVariants = 'heading' | 'body'
+type TypographyVariants = 'body' | 'heading' | 'headingLarge'
 
 export interface TypographyProps {
   readonly text: string
@@ -13,6 +13,8 @@ const getTextStyle = (variant: TypographyVariants) => {
   switch (variant) {
     case 'heading':
       return styles.heading
+    case 'headingLarge':
+      return styles.headingLarge
     case 'body':
       return styles.body
     default:
@@ -28,21 +30,30 @@ export const Typography = ({ variant = 'body', text }: TypographyProps) => {
   )
 }
 
-const styles = StyleSheet.create({
-  heading: {
+const defaultTextStyle = StyleSheet.create({
+  text: {
     fontFamily: 'Inter',
-    fontWeight: '600',
-    fontSize: scale(2),
-    lineHeight: scale(2.5),
-    letterSpacing: 1,
     color: '#EEEEEE',
+    letterSpacing: 1,
   },
+})
+
+const styles = StyleSheet.create({
   body: {
+    ...defaultTextStyle.text,
     fontFamily: 'Inter',
     fontWeight: '500',
     fontSize: scale(1.5),
     lineHeight: scale(2),
-    letterSpacing: 1,
-    color: '#EEEEEE',
+  },
+  heading: {
+    ...defaultTextStyle.text,
+    fontWeight: '600',
+    fontSize: scale(2),
+  },
+  headingLarge: {
+    ...defaultTextStyle.text,
+    fontWeight: '600',
+    fontSize: scale(3),
   },
 })
