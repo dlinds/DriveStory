@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "storybook-generate": "sb-rn-get-stories",
+    "prestorybook": "sb-rn-get-stories",
     "storybook-watch": "sb-rn-watcher"
   },
   "dependencies": {
