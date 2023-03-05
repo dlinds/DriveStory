@@ -25,7 +25,7 @@ const getTextStyle = (variant: TypographyVariants) => {
 export const Typography = ({ variant = 'body', text }: TypographyProps) => {
   return (
     <Text style={getTextStyle(variant)}>
-      {variant === 'body' ? text : text.toUpperCase()}
+      {variant.includes('heading') ? text.toUpperCase() : text}
     </Text>
   )
 }
