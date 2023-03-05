@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Pressable } from "react-native";
 import Sound from "react-native-sound";
 import { queryOpenAi } from "../../../common/home/home";
 import { handleTextToSpeech } from "../../../common/home/home";
-import { GetSpeech } from "../atoms/GetSpeech";
+import { GetSpeech } from "../atoms/get_speech";
 
 export const Body = () => {
   const [isPlaying, setIsPlaying] = useState(false);
