@@ -1,20 +1,18 @@
-import React from "react";
-import { Dimensions, SafeAreaView, ScrollView } from "react-native";
+import React from 'react'
+import { Dimensions, SafeAreaView, ScrollView } from 'react-native'
 
-import { Home } from "./src/ui/Home/screens/Home";
+import { Home } from './src/ui/Home/screens/Home'
+import { Login } from './src/ui/Login/screens/login'
 
 const App = (): JSX.Element => {
   return (
     <SafeAreaView>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={{ height: Dimensions.get("screen").height }}
-      >
-        <Home />
+      <ScrollView contentInsetAdjustmentBehavior="automatic">
+        <Login />
       </ScrollView>
     </SafeAreaView>
-  );
-};
+  )
+}
 
-// export default App;
-export { default } from "./.storybook";
+export default App
+// export { default } from './.storybook'
