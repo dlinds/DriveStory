@@ -1,6 +1,7 @@
 import React from 'react'
 import {
   ActivityIndicator,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   text: {
-    fontFamily: 'Inter',
+    fontFamily: Platform.OS === 'android' ? 'Inter' : 'Helvetica',
     fontWeight: '600',
     fontSize: scale(2),
     letterSpacing: 2,

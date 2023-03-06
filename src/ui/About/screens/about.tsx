@@ -4,7 +4,7 @@ import { scale } from '../../../common/utilities'
 import { Logo } from '../../_atoms/logo'
 import { Typography } from '../../_atoms/typography'
 
-export const Login = () => {
+export const About = () => {
   return (
     <View
       style={{

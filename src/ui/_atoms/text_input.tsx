@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { Platform, StyleSheet, Text, TextInput, View } from 'react-native'
 import { scale } from '../../common/utilities'
 
 export interface TextOrNumInputProps {
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   text: {
-    fontFamily: 'Inter',
+    fontFamily: Platform.OS === 'android' ? 'Inter' : 'Helvetica',
     fontWeight: '600',
   },
   textInput: {

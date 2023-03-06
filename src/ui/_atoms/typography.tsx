@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text } from 'react-native'
+import { Platform, StyleSheet, Text } from 'react-native'
 import { scale } from '../../common/utilities'
 
 type TypographyVariants = 'body' | 'heading' | 'headingLarge'
@@ -32,7 +32,7 @@ export const Typography = ({ variant = 'body', text }: TypographyProps) => {
 
 const defaultTextStyle = StyleSheet.create({
   text: {
-    fontFamily: 'Inter',
+    fontFamily: Platform.OS === 'android' ? 'Inter' : 'Helvetica',
     color: '#EEEEEE',
     letterSpacing: 1,
   },
@@ -41,7 +41,7 @@ const defaultTextStyle = StyleSheet.create({
 const styles = StyleSheet.create({
   body: {
     ...defaultTextStyle.text,
-    fontFamily: 'Inter',
+    fontFamily: Platform.OS === 'android' ? 'Inter' : 'Helvetica',
     fontWeight: '500',
     fontSize: scale(1.5),
     lineHeight: scale(2),
