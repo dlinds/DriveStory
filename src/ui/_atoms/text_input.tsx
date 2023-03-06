@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Platform, StyleSheet, Text, TextInput, View } from 'react-native'
 import { scale } from '../../common/utilities'
+import { appColors } from '../assets/app_colors'
 
 export interface TextOrNumInputProps {
   readonly placeholder?: string
@@ -54,25 +55,25 @@ const styles = StyleSheet.create({
   textInput: {
     paddingBottom: scale(0.3),
     paddingHorizontal: 0,
-    borderBottomColor: '#EDEDED',
+    borderBottomColor: appColors.offWhite,
     borderBottomWidth: 2,
-    color: '#EEEEEE',
+    color: appColors.offWhite,
     fontSize: scale(2),
     letterSpacing: 1,
   },
   placeholder: {
     position: 'absolute',
-    top: scale(2),
+    top: Platform.OS === 'android' ? scale(2) : 0,
     alignSelf: 'center',
     fontSize: scale(2),
     letterSpacing: 2,
-    color: '#CBCBCB',
+    color: appColors.lightGray,
   },
   label: {
     position: 'absolute',
     bottom: scale(4),
     fontSize: scale(1.2),
-    color: '#898989',
+    color: appColors.mediumGray,
     letterSpacing: 1,
   },
 })

@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import { scale } from '../../common/utilities'
+import { appColors } from '../assets/app_colors'
+import { Typography } from './typography'
 
 interface ButtonProps {
   readonly variant?: 'primary' | 'secondary'
@@ -23,14 +25,16 @@ export const Button = ({
   spinner,
   disabled,
 }: ButtonProps) => {
-  const textColor = !disabled ? '#D5D5D5' : '#898989'
-
   const buttonBody = spinner ? (
-    <ActivityIndicator color={textColor} />
+    <ActivityIndicator
+      color={disabled ? appColors.mediumGray : appColors.offWhite}
+    />
   ) : (
-    <Text style={{ ...styles.text, color: textColor }}>
-      {text.toUpperCase()}
-    </Text>
+    <Typography
+      text={text.toUpperCase()}
+      textColor={disabled ? appColors.mediumGray : undefined}
+      variant="heading"
+    />
   )
 
   const variantStyle =
@@ -40,13 +44,13 @@ export const Button = ({
       ? styles.disabledPrimaryContainer
       : styles.disabledSecondaryContainer
 
-  const buttonBackgroundColor = !disabled ? variantStyle : disabledStyle
+  const buttonStyle = !disabled ? variantStyle : disabledStyle
 
   return (
     <TouchableOpacity
       style={{
         ...styles.container,
-        ...buttonBackgroundColor,
+        ...buttonStyle,
       }}
       onPress={onPress}
       disabled={disabled}
@@ -67,25 +71,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   primaryContainer: {
-    borderColor: '#D5D5D5',
-    backgroundColor: '#8870CE',
+    borderColor: appColors.lightGray,
+    backgroundColor: appColors.primaryPurple,
   },
   secondaryContainer: {
-    borderColor: '#8870CE',
+    borderColor: appColors.primaryPurple,
     backgroundColor: 'transparent',
   },
   disabledPrimaryContainer: {
-    borderColor: '#565656',
-    backgroundColor: '#564D71',
+    borderColor: appColors.mediumGray,
+    backgroundColor: appColors.darkPurple,
   },
   disabledSecondaryContainer: {
-    borderColor: '#564D71',
+    borderColor: appColors.darkPurple,
     backgroundColor: 'transparent',
-  },
-  text: {
-    fontFamily: Platform.OS === 'android' ? 'Inter' : 'Helvetica',
-    fontWeight: '600',
-    fontSize: scale(2),
-    letterSpacing: 2,
   },
 })

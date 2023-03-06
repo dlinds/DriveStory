@@ -1,12 +1,14 @@
 import React from 'react'
 import { Platform, StyleSheet, Text } from 'react-native'
 import { scale } from '../../common/utilities'
+import { appColors } from '../assets/app_colors'
 
 type TypographyVariants = 'body' | 'heading' | 'headingLarge'
 
 export interface TypographyProps {
   readonly text: string
   readonly variant?: TypographyVariants
+  readonly textColor?: string
 }
 
 const getTextStyle = (variant: TypographyVariants) => {
@@ -22,9 +24,14 @@ const getTextStyle = (variant: TypographyVariants) => {
   }
 }
 
-export const Typography = ({ variant = 'body', text }: TypographyProps) => {
+export const Typography = ({
+  variant = 'body',
+  text,
+  textColor,
+}: TypographyProps) => {
+  const color = textColor ? { color: textColor } : {}
   return (
-    <Text style={getTextStyle(variant)}>
+    <Text style={{ ...getTextStyle(variant), ...color }}>
       {variant.includes('heading') ? text.toUpperCase() : text}
     </Text>
   )
@@ -33,7 +40,7 @@ export const Typography = ({ variant = 'body', text }: TypographyProps) => {
 const defaultTextStyle = StyleSheet.create({
   text: {
     fontFamily: Platform.OS === 'android' ? 'Inter' : 'Helvetica',
-    color: '#EEEEEE',
+    color: appColors.offWhite,
     letterSpacing: 1,
   },
 })

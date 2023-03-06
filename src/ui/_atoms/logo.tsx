@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { scale } from '../../common/utilities'
+import { appColors } from '../assets/app_colors'
 import { Typography } from './typography'
 
 export const Logo = () => {
@@ -15,13 +16,13 @@ export const Logo = () => {
 
 const styles = StyleSheet.create({
   outsideContainer: {
-    backgroundColor: '#8870CE',
+    backgroundColor: appColors.primaryPurple,
     padding: scale(0.5),
     elevation: 10,
     borderRadius: 5,
   },
   insideContainer: {
-    borderColor: '#333333',
+    borderColor: appColors.darkGray,
     borderWidth: 5,
     borderRadius: 5,
     padding: scale(1.5),
