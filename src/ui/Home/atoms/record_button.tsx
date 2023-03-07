@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native'
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import { scale } from '../../../common/utilities'
 import { appColors } from '../../assets/app_colors'
 
 export interface RecordButtonProps {
   readonly setIsRecording: (value: boolean) => void
   readonly isRecording: boolean
+  readonly showIndicator?: boolean
 }
 
 export const RecordButton = ({
   setIsRecording,
   isRecording,
+  showIndicator = false,
 }: RecordButtonProps) => {
-  const [localIsRecording, setLocalIsRecording] = useState(false)
+  const [localIsRecording, setLocalIsRecording] = useState(isRecording)
 
   useEffect(() => {
     setIsRecording(localIsRecording)
@@ -23,11 +31,18 @@ export const RecordButton = ({
     ...(localIsRecording ? styles.recordingContainer : styles.defaultContainer),
   }
 
+  const activityIndicator = (
+    <ActivityIndicator size="large" color={appColors.offWhite} />
+  )
+
   return (
     <TouchableOpacity
+      disabled={showIndicator}
       onPress={() => setLocalIsRecording((prev) => !prev)}
       style={recordButtonStyle}
-    ></TouchableOpacity>
+    >
+      {showIndicator && activityIndicator}
+    </TouchableOpacity>
   )
 }
 
@@ -38,6 +53,8 @@ const styles = StyleSheet.create({
     borderRadius: scale(24),
     borderWidth: scale(0.6),
     elevation: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   defaultContainer: {
     backgroundColor: appColors.primaryPurple,

@@ -21,3 +21,8 @@ const RecordButtonMeta = {
 export default RecordButtonMeta
 
 export const Default = {}
+export const ActivityIndicator = {
+  args: {
+    showIndicator: true,
+  } as RecordButtonProps,
+}
