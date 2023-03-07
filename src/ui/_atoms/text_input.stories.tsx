@@ -31,7 +31,7 @@ export default TextInputMeta
 export const Default = {}
 export const NumbersOnly = {
   args: {
-    numbersOnly: true,
+    keyboardType: 'number-pad',
     placeholder: 'Numbers only',
   } as TextOrNumInputProps,
 }

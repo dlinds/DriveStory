@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Platform, StyleSheet, Text, TextInput, View } from 'react-native'
+import {
+  KeyboardTypeOptions,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native'
 import { scale } from '../../common/utilities'
 import { appColors } from '../assets/app_colors'
 
@@ -7,14 +14,18 @@ export interface TextOrNumInputProps {
   readonly placeholder?: string
   readonly value?: string
   readonly setValue: (val: string) => void
-  readonly numbersOnly?: boolean
+  readonly keyboardType?: KeyboardTypeOptions
+  readonly secureTextEntry?: boolean
+  readonly autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters'
 }
 
 export const TextOrNumInput = ({
   placeholder,
   value = '',
   setValue,
-  numbersOnly = false,
+  keyboardType = 'default',
+  secureTextEntry = false,
+  autoCapitalize = 'sentences',
 }: TextOrNumInputProps) => {
   const [localValue, setLocalValue] = useState(value)
 
@@ -36,7 +47,9 @@ export const TextOrNumInput = ({
       <TextInput
         style={{ ...styles.textInput, ...styles.text }}
         onChangeText={setLocalValue}
-        keyboardType={numbersOnly ? 'number-pad' : 'default'}
+        keyboardType={keyboardType}
+        secureTextEntry={secureTextEntry}
+        autoCapitalize={autoCapitalize}
       >
         {localValue}
       </TextInput>
@@ -71,7 +84,7 @@ const styles = StyleSheet.create({
   },
   label: {
     position: 'absolute',
-    bottom: scale(4),
+    bottom: scale(3.4),
     fontSize: scale(1.2),
     color: appColors.mediumGray,
     letterSpacing: 1,

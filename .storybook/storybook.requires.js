@@ -20,6 +20,7 @@ global.STORIES = [
 
 import "@storybook/addon-ondevice-controls/register";
 import "@storybook/addon-ondevice-actions/register";
+import "@storybook/addon-ondevice-backgrounds/register";
 
 import { argsEnhancers } from "@storybook/addon-actions/dist/modern/preset/addArgs";
 
@@ -52,6 +53,8 @@ const getStories = () => {
     "./src/ui/_atoms/text_input.stories.tsx": require("../src/ui/_atoms/text_input.stories.tsx"),
     "./src/ui/_atoms/typography.stories.tsx": require("../src/ui/_atoms/typography.stories.tsx"),
     "./src/ui/Home/atoms/get_speech.stories.tsx": require("../src/ui/Home/atoms/get_speech.stories.tsx"),
+    "./src/ui/start/molecules/login_form.stories.tsx": require("../src/ui/start/molecules/login_form.stories.tsx"),
+    "./src/ui/start/molecules/register_form.stories.tsx": require("../src/ui/start/molecules/register_form.stories.tsx"),
   };
 };
 

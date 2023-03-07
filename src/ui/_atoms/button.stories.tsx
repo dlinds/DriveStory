@@ -19,7 +19,7 @@ const ButtonMeta = {
           flex: 1,
         }}
       >
-        <View style={{ width: scale(21) }}>
+        <View style={{ width: scale(21), height: scale(4.8) }}>
           <Story />
         </View>
       </View>
