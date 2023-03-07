@@ -1,12 +1,15 @@
 import React from 'react'
-import { Dimensions, SafeAreaView, ScrollView } from 'react-native'
-
-import { Home } from './src/ui/Home/screens/Home'
-import { About } from './src/ui/About/screens/about'
+import { SafeAreaView, ScrollView, StatusBar } from 'react-native'
+import { appColors } from './src/ui/assets/app_colors'
+import { About } from './src/ui/start/screens/start'
 
 const App = (): JSX.Element => {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: appColors.darkGray }}>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={appColors.darkGray}
+      />
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <About />
       </ScrollView>

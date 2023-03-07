@@ -7,6 +7,7 @@ import {
   View,
 } from 'react-native'
 import { scale } from '../../../common/utilities'
+import { appColors } from '../../assets/app_colors'
 import { Logo } from '../../_atoms/logo'
 import { Typography } from '../../_atoms/typography'
 import { LoginForm } from '../molecules/login_form'
@@ -65,6 +66,7 @@ export const About = () => {
           <TouchableOpacity
             onPress={() => setScreenElement('start')}
             hitSlop={styles.backHitSlop}
+            style={styles.back}
           >
             <Typography text="Back" variant="heading" />
           </TouchableOpacity>
@@ -83,7 +85,7 @@ export const About = () => {
 
 const styles = StyleSheet.create({
   screen: {
-    padding: scale(6),
+    padding: scale(5),
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -92,6 +94,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     rowGap: scale(2),
     marginVertical: scale(3),
+  },
+  back: {
+    borderBottomColor: appColors.offWhite,
+    borderBottomWidth: 1,
   },
   backHitSlop: {
     top: scale(3),

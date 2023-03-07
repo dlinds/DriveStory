@@ -25,6 +25,7 @@ export const LoginForm = ({ loginCallback }: LoginFormProps) => {
         value={password}
         setValue={setPassword}
         placeholder="Password"
+        secureTextEntry={true}
       />
       <View style={styles.buttonsContainer}>
         <Button text="login" onPress={loginCallback} />
@@ -36,7 +37,7 @@ export const LoginForm = ({ loginCallback }: LoginFormProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    rowGap: scale(3),
+    rowGap: scale(2),
     width: '100%',
   },
   buttonsContainer: {
