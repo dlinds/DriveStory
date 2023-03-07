@@ -56,6 +56,7 @@ export const RegisterForm = ({ registerCallback }: RegisterFormProps) => {
       <Pressable
         style={styles.terms}
         onPress={() => setTermsAccepted((prev) => !prev)}
+        hitSlop={styles.checkHitSlop}
       >
         <Icon
           name={!termsAccepted ? 'checkbox-blank-outline' : 'checkbox-outline'}
@@ -90,5 +91,11 @@ const styles = StyleSheet.create({
     height: scale(6),
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  checkHitSlop: {
+    top: scale(3),
+    bottom: scale(3),
+    left: scale(3),
+    right: scale(3),
   },
 })

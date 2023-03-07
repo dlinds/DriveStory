@@ -1,12 +1,7 @@
 import React, { ReactElement, useEffect, useState } from 'react'
-import {
-  Dimensions,
-  Pressable,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { scale } from '../../../common/utilities'
+import { AppContainer } from '../../app_container/screens/app_container'
 import { appColors } from '../../assets/app_colors'
 import { Logo } from '../../_atoms/logo'
 import { Typography } from '../../_atoms/typography'
@@ -53,47 +48,45 @@ export const About = () => {
   }, [screenElement])
 
   return (
-    <View
-      style={{
-        ...styles.screen,
-        height: Dimensions.get('screen').height - scale(10), //fix this
-      }}
-    >
-      <Logo />
-      <>
-        {currentScreen}
-        {screenElement !== 'start' && (
-          <TouchableOpacity
-            onPress={() => setScreenElement('start')}
-            hitSlop={styles.backHitSlop}
-            style={styles.back}
-          >
-            <Typography text="Back" variant="heading" />
-          </TouchableOpacity>
-        )}
-      </>
-      <View style={styles.textContainer}>
-        <Typography text="About" variant="headingLarge" />
-        <Typography
-          text="This is the about what is the product and all of that stuff"
-          variant="body"
-        />
+    <AppContainer hideFooter={true}>
+      <View style={styles.screen}>
+        <Logo />
+        <>
+          {currentScreen}
+          {screenElement !== 'start' && (
+            <TouchableOpacity
+              onPress={() => setScreenElement('start')}
+              hitSlop={styles.backHitSlop}
+              style={styles.back}
+            >
+              <Typography text="Back" variant="heading" />
+            </TouchableOpacity>
+          )}
+        </>
+        <View style={styles.textContainer}>
+          <Typography text="About" variant="headingLarge" />
+          <Typography
+            text="This is the about what is the product and all of that stuff"
+            variant="body"
+          />
+        </View>
       </View>
-    </View>
+    </AppContainer>
   )
 }
 
 const styles = StyleSheet.create({
   screen: {
-    padding: scale(5),
+    padding: scale(4),
     justifyContent: 'space-between',
     alignItems: 'center',
+    flexGrow: 1,
   },
   textContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     rowGap: scale(2),
-    marginVertical: scale(3),
+    marginVertical: scale(6),
   },
   back: {
     borderBottomColor: appColors.offWhite,
