@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(2),
     borderWidth: 1,
     borderRadius: scale(0.8),
-    maxHeight: scale(4.7),
+    maxHeight: scale(Platform.OS === 'ios' ? 4.7 : 5.2),
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

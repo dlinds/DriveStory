@@ -62,7 +62,10 @@ export const About = () => {
       <>
         {currentScreen}
         {screenElement !== 'start' && (
-          <TouchableOpacity onPress={() => setScreenElement('start')}>
+          <TouchableOpacity
+            onPress={() => setScreenElement('start')}
+            hitSlop={styles.backHitSlop}
+          >
             <Typography text="Back" variant="heading" />
           </TouchableOpacity>
         )}
@@ -89,5 +92,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     rowGap: scale(2),
     marginVertical: scale(3),
+  },
+  backHitSlop: {
+    top: scale(3),
+    bottom: scale(3),
+    left: scale(3),
+    right: scale(3),
   },
 })
