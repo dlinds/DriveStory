@@ -48,7 +48,7 @@ export const About = () => {
   }, [screenElement])
 
   return (
-    <AppContainer>
+    <AppContainer hideFooter={true}>
       <View style={styles.screen}>
         <Logo />
         <>
