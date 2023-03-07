@@ -2,30 +2,50 @@ import React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { scale } from '../../../common/utilities'
 import { appColors } from '../../assets/app_colors'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 
 export const AppFooter = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity hitSlop={styles.iconHitSlop}>
-        <Icon name={'home-variant-outline'} size={scale(3)} />
+        <MaterialCommunityIcon
+          name={'home-variant-outline'}
+          size={scale(3)}
+          color={appColors.offWhite}
+        />
       </TouchableOpacity>
       <TouchableOpacity hitSlop={styles.iconHitSlop}>
-        <Icon name={'playlist-music'} size={scale(3)} />
+        <MaterialCommunityIcon
+          name={'playlist-music'}
+          size={scale(3)}
+          color={appColors.offWhite}
+        />
       </TouchableOpacity>
       <TouchableOpacity hitSlop={styles.iconHitSlop}>
         <View style={styles.plusIconOuter}>
           <View style={styles.plusIconInner}>
-            <Icon name={'plus'} size={scale(3)} />
+            <MaterialCommunityIcon
+              name={'plus'}
+              size={scale(3)}
+              color={appColors.offWhite}
+            />
           </View>
         </View>
       </TouchableOpacity>
       <TouchableOpacity hitSlop={styles.iconHitSlop}>
-        <MaterialIcon name={'settings'} size={scale(3)} />
+        <MaterialIcon
+          name={'settings'}
+          size={scale(3)}
+          color={appColors.offWhite}
+        />
       </TouchableOpacity>
       <TouchableOpacity hitSlop={styles.iconHitSlop}>
-        <MaterialIcon name={'account-box'} size={scale(3)} />
+        <MaterialIcon
+          name={'account-box'}
+          size={scale(3)}
+          color={appColors.offWhite}
+        />
       </TouchableOpacity>
     </View>
   )

@@ -4,7 +4,8 @@ import { scale } from '../../../common/utilities'
 import { Button } from '../../_atoms/button'
 import { TextOrNumInput } from '../../_atoms/text_input'
 import { Typography } from '../../_atoms/typography'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { appColors } from '../../assets/app_colors'
 
 export interface RegisterFormProps {
   readonly registerCallback: () => void
@@ -58,9 +59,10 @@ export const RegisterForm = ({ registerCallback }: RegisterFormProps) => {
         onPress={() => setTermsAccepted((prev) => !prev)}
         hitSlop={styles.checkHitSlop}
       >
-        <Icon
+        <MaterialCommunityIcon
           name={!termsAccepted ? 'checkbox-blank-outline' : 'checkbox-outline'}
           size={scale(2.5)}
+          color={appColors.offWhite}
         />
         <Typography variant="heading" text="ACCEPT TERMS AND CONDITIONS" />
       </Pressable>

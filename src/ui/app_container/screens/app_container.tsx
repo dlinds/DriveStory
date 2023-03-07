@@ -30,11 +30,12 @@ export const AppContainer = ({
 
 const styles = StyleSheet.create({
   container: {
-    padding: scale(1),
+    paddingVertical: scale(1),
   },
   footerContainer: {
     position: 'absolute',
     bottom: scale(0),
     alignSelf: 'center',
+    paddingHorizontal: scale(1),
   },
 })
