@@ -16,7 +16,7 @@ const RegisterFormMeta = {
           alignItems: 'center',
           justifyContent: 'center',
           flex: 1,
-          paddingHorizontal: scale(8),
+          paddingHorizontal: scale(5),
         }}
       >
         <Story />
