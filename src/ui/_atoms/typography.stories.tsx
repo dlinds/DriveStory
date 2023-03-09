@@ -4,7 +4,7 @@ import { scale } from '../../common/utilities'
 import { Typography, TypographyProps } from './typography'
 
 const TextInputMeta = {
-  title: 'Typography',
+  title: 'Atoms/Typography',
   component: Typography,
   args: {
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquam, arcu eu sagittis sodales, massa lorem convallis urna, ut bibendum ipsum sem eu diam. Morbi dui erat, tincidunt et lorem ac, pretium laoreet nulla.',

@@ -4,7 +4,7 @@ import { scale } from '../../common/utilities'
 import { Logo } from './logo'
 
 const LogoMeta = {
-  title: 'Logo',
+  title: 'Atoms/Logo',
   component: Logo,
   decorators: [
     (Story: any) => (

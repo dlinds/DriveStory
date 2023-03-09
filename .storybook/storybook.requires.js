@@ -55,6 +55,7 @@ const getStories = () => {
     "./src/ui/app_container/molecules/app_footer.stories.tsx": require("../src/ui/app_container/molecules/app_footer.stories.tsx"),
     "./src/ui/app_container/screens/app_container.stories.tsx": require("../src/ui/app_container/screens/app_container.stories.tsx"),
     "./src/ui/Home/atoms/record_button.stories.tsx": require("../src/ui/Home/atoms/record_button.stories.tsx"),
+    "./src/ui/Home/molecules/customize_story_popup.stories.tsx": require("../src/ui/Home/molecules/customize_story_popup.stories.tsx"),
     "./src/ui/Home/screens/home.stories.tsx": require("../src/ui/Home/screens/home.stories.tsx"),
     "./src/ui/start/molecules/login_form.stories.tsx": require("../src/ui/start/molecules/login_form.stories.tsx"),
     "./src/ui/start/molecules/register_form.stories.tsx": require("../src/ui/start/molecules/register_form.stories.tsx"),

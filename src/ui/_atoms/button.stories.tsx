@@ -4,7 +4,7 @@ import { scale } from '../../common/utilities'
 import { Button } from './button'
 
 const ButtonMeta = {
-  title: 'Button',
+  title: 'Atoms/Button',
   component: Button,
   args: {
     text: 'Hello world',

@@ -4,7 +4,7 @@ import { scale } from '../../common/utilities'
 import { TextOrNumInput, TextOrNumInputProps } from './text_input'
 
 const TextInputMeta = {
-  title: 'Text Input',
+  title: 'Atoms/Text Input',
   component: TextOrNumInput,
   args: {
     setValue: (value: string) => console.log({ value }),
@@ -33,5 +33,11 @@ export const NumbersOnly = {
   args: {
     keyboardType: 'number-pad',
     placeholder: 'Numbers only',
+  } as TextOrNumInputProps,
+}
+export const Multiline = {
+  args: {
+    multiline: true,
+    placeholder: 'multiline',
   } as TextOrNumInputProps,
 }

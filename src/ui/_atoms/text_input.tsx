@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 import { scale } from '../../common/utilities'
 import { appColors } from '../assets/app_colors'
+import { Typography } from './typography'
 
 export interface TextOrNumInputProps {
   readonly placeholder?: string
@@ -17,6 +18,7 @@ export interface TextOrNumInputProps {
   readonly keyboardType?: KeyboardTypeOptions
   readonly secureTextEntry?: boolean
   readonly autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters'
+  readonly multiline?: boolean
 }
 
 export const TextOrNumInput = ({
@@ -26,6 +28,7 @@ export const TextOrNumInput = ({
   keyboardType = 'default',
   secureTextEntry = false,
   autoCapitalize = 'sentences',
+  multiline = false,
 }: TextOrNumInputProps) => {
   const [localValue, setLocalValue] = useState(value)
 
@@ -33,23 +36,43 @@ export const TextOrNumInput = ({
     setValue(localValue)
   }, [localValue])
 
+  const textInputStyle = {
+    ...styles.textInput,
+    ...styles.text,
+    ...(multiline ? styles.multilineStyle : {}),
+  }
+
+  const placeholderComponent =
+    placeholder && localValue.length <= 0 ? (
+      <Text
+        style={{
+          ...styles.placeholder,
+          ...styles.text,
+          ...(multiline && styles.multilinePlaceholder),
+        }}
+      >
+        {placeholder.toUpperCase()}
+      </Text>
+    ) : (
+      <>
+        {!multiline && (
+          <View style={styles.standardLabel}>
+            <Typography text={placeholder?.toUpperCase() as string} />
+          </View>
+        )}
+      </>
+    )
+
   return (
     <View style={styles.container}>
-      {placeholder && localValue.length <= 0 ? (
-        <Text style={{ ...styles.placeholder, ...styles.text }}>
-          {placeholder.toUpperCase()}
-        </Text>
-      ) : (
-        <Text style={{ ...styles.label, ...styles.text }}>
-          {placeholder?.toUpperCase()}
-        </Text>
-      )}
+      {placeholderComponent}
       <TextInput
-        style={{ ...styles.textInput, ...styles.text }}
+        style={textInputStyle}
         onChangeText={setLocalValue}
         keyboardType={keyboardType}
         secureTextEntry={secureTextEntry}
         autoCapitalize={autoCapitalize}
+        multiline={multiline}
       >
         {localValue}
       </TextInput>
@@ -73,6 +96,15 @@ const styles = StyleSheet.create({
     color: appColors.offWhite,
     fontSize: scale(2),
     letterSpacing: 1,
+    flexWrap: 'wrap',
+  },
+  multilineStyle: {
+    height: scale(10),
+    borderColor: appColors.mediumGray,
+    borderBottomColor: appColors.mediumGray,
+    borderWidth: 2,
+    paddingHorizontal: scale(1),
+    borderRadius: scale(0.7),
   },
   placeholder: {
     position: 'absolute',
@@ -82,7 +114,17 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     color: appColors.lightGray,
   },
-  label: {
+  multilinePlaceholder: {
+    position: 'absolute',
+    top: Platform.OS === 'android' ? scale(2) : 0,
+    paddingHorizontal: scale(1),
+    paddingTop: scale(0.5),
+    alignSelf: 'auto',
+    fontSize: scale(2),
+    letterSpacing: 2,
+    color: appColors.lightGray,
+  },
+  standardLabel: {
     position: 'absolute',
     bottom: scale(3.4),
     fontSize: scale(1.2),
