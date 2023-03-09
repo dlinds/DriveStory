@@ -4,7 +4,7 @@ import { scale } from '../../../common/utilities'
 import { Home } from './home'
 
 const HomeMeta = {
-  title: 'Home',
+  title: 'Home/Screen',
   component: Home,
   decorators: [
     (Story: any) => (

@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     paddingHorizontal: scale(1),
     borderRadius: scale(0.7),
+    textAlignVertical: 'top',
   },
   placeholder: {
     position: 'absolute',
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
   },
   multilinePlaceholder: {
     position: 'absolute',
-    top: Platform.OS === 'android' ? scale(2) : 0,
+    top: Platform.OS === 'android' ? scale(0.5) : 0,
     paddingHorizontal: scale(1),
     paddingTop: scale(0.5),
     alignSelf: 'auto',
