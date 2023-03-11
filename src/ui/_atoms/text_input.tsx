@@ -34,11 +34,11 @@ export const TextOrNumInput = ({
   onPressIn,
   disabled,
 }: TextOrNumInputProps) => {
-  const [localValue, setLocalValue] = useState(value)
+  // const [localValue, setLocalValue] = useState(value)
 
-  useEffect(() => {
-    setValue(localValue)
-  }, [localValue])
+  // useEffect(() => {
+  //   setValue(localValue)
+  // }, [localValue])
 
   const textInputStyle = {
     ...styles.textInput,
@@ -47,7 +47,7 @@ export const TextOrNumInput = ({
   }
 
   const placeholderComponent =
-    placeholder && localValue.length <= 0 ? (
+    placeholder && value.length <= 0 ? (
       <Text
         style={{
           ...styles.placeholder,
@@ -72,16 +72,15 @@ export const TextOrNumInput = ({
       {placeholderComponent}
       <TextInput
         style={textInputStyle}
-        onChangeText={setLocalValue}
+        onChangeText={setValue}
         keyboardType={keyboardType}
         secureTextEntry={secureTextEntry}
         autoCapitalize={autoCapitalize}
         multiline={multiline}
         onPressIn={onPressIn}
         editable={!disabled}
-      >
-        {localValue}
-      </TextInput>
+        value={value}
+      />
     </View>
   )
 }

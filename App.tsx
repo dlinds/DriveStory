@@ -9,11 +9,6 @@ import { About } from './src/ui/start/screens/start'
 const App = (): JSX.Element => {
   const [store, setStore] = useState<Store>(initialState)
 
-  console.log({ store })
-
-  useEffect(() => {
-    console.log(initialState)
-  }, [initialState])
   return (
     <SafeAreaView style={{ backgroundColor: appColors.darkGray }}>
       <StatusBar

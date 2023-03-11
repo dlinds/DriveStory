@@ -14,7 +14,6 @@ import {
 
 export interface CustomizeOption {
   readonly label: string
-  readonly isSelected: boolean
   readonly customAnswer?: boolean
 }
 export interface CustomizeStoryPopupProps {
@@ -46,11 +45,10 @@ export const CustomizeStoryPopup = ({
   useEffect(() => {
     setSelectedCustomized(store.store, store.setStore, selected)
   }, [selected])
-  const [value, setValue] = useState<string>()
 
-  useEffect(() => {
-    setCustomizedText(store.store, store.setStore, value || '')
-  }, [value])
+  const handleSetCustomValue = (val: string) => {
+    setCustomizedText(store.store, store.setStore, val || '')
+  }
 
   return (
     <View style={styles.container}>
@@ -86,7 +84,7 @@ export const CustomizeStoryPopup = ({
               <View style={styles.customTextContainer}>
                 <TextOrNumInput
                   multiline
-                  setValue={setValue}
+                  setValue={handleSetCustomValue}
                   value={store.store.customText}
                   placeholder="..."
                   onPressIn={() => handleSelection(option)}

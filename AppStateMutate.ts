@@ -4,19 +4,15 @@ export const initialState: Store = {
   customizeOptions: [
     {
       label: 'Two Characters',
-      isSelected: false,
     },
     {
       label: 'Chapters',
-      isSelected: false,
     },
     {
       label: 'Use me as the main character',
-      isSelected: false,
     },
     {
       label: 'Customize prompt',
-      isSelected: false,
       customAnswer: true,
     },
   ],
@@ -45,7 +41,12 @@ export const setSelectedCustomized = (
   setStore: (store: Store) => void,
   options: CustomizeOption[]
 ) => {
-  setStore({ ...store, selectedCustomizedOptions: options })
+  console.log({ options })
+  const customText =
+    options.filter((i) => i.customAnswer === true).length >= 1
+      ? store.customText
+      : ''
+  setStore({ ...store, selectedCustomizedOptions: options, customText })
 }
 
 export const setCustomizedText = (
