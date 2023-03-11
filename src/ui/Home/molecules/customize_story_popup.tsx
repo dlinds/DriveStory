@@ -15,40 +15,29 @@ export interface CustomizeStoryPopupProps {
   readonly customizeOptions: CustomizeOption[]
 }
 
-const generateCheckmarkIcon = (option: CustomizeOption) => {
-  const [isSelected, setIsSelected] = useState<boolean>(option.isSelected)
-  const [value, setValue] = useState<string>()
+// const generateCheckmarkIcon = (option: CustomizeOption) => {
+//   const [isSelected, setIsSelected] = useState<boolean>(option.isSelected)
+//   const [value, setValue] = useState<string>()
 
-  return (
-    <TouchableOpacity
-      onPress={() => setIsSelected((prev) => !prev)}
-      style={styles.optionContainer}
-    >
-      <View style={styles.checkmarkRowContainer}>
-        <MaterialCommunityIcon
-          name={isSelected ? 'check-circle' : 'checkbox-blank-circle-outline'}
-          size={scale(3)}
-          color={appColors.primaryPurple}
-        />
-        <Typography text={option.label} variant="heading" />
-      </View>
-      {option.customAnswer && (
-        <View style={styles.customTextContainer}>
-          <TextOrNumInput
-            multiline
-            setValue={setValue}
-            value={value}
-            placeholder={option.label}
-          />
-        </View>
-      )}
-    </TouchableOpacity>
-  )
-}
+//   return (
+
+//   )
+// }
 
 export const CustomizeStoryPopup = ({
   customizeOptions,
 }: CustomizeStoryPopupProps) => {
+  const [selected, setSelected] = useState<ReadonlyArray<CustomizeOption>>([])
+
+  const handleSelection = (option: CustomizeOption) => {
+    if (option.customAnswer) {
+      setSelected([option])
+      return
+    }
+  }
+
+  const [value, setValue] = useState<string>()
+
   return (
     <View style={styles.container}>
       <View style={styles.headingContainer}>
@@ -56,7 +45,35 @@ export const CustomizeStoryPopup = ({
       </View>
       <View>
         {customizeOptions.map((option) => (
-          <View key={option.label}>{generateCheckmarkIcon(option)}</View>
+          <TouchableOpacity
+            onPress={() => handleSelection(option)}
+            style={styles.optionContainer}
+            key={option.label}
+          >
+            <View style={styles.checkmarkRowContainer}>
+              <MaterialCommunityIcon
+                name={
+                  selected.includes(option)
+                    ? 'check-circle'
+                    : 'checkbox-blank-circle-outline'
+                }
+                size={scale(3)}
+                color={appColors.primaryPurple}
+              />
+              <Typography text={option.label} variant="heading" />
+            </View>
+            {option.customAnswer && (
+              <View style={styles.customTextContainer}>
+                <TextOrNumInput
+                  multiline
+                  setValue={setValue}
+                  value={value}
+                  placeholder="..."
+                  onPressIn={() => handleSelection(option)}
+                />
+              </View>
+            )}
+          </TouchableOpacity>
         ))}
       </View>
     </View>
@@ -67,7 +84,7 @@ const styles = StyleSheet.create({
   container: {
     alignSelf: 'center',
     rowGap: scale(2),
-    paddingHorizontal: scale(3),
+    paddingHorizontal: scale(2),
     paddingVertical: scale(5),
     backgroundColor: appColors.darkGray,
     borderColor: appColors.lightGray,
@@ -81,7 +98,7 @@ const styles = StyleSheet.create({
     marginTop: scale(2),
   },
   customTextContainer: {
-    marginTop: scale(1),
+    marginTop: scale(1.5),
     paddingLeft: scale(5),
   },
   checkmarkRowContainer: {

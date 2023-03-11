@@ -40,6 +40,7 @@ export const Home = () => {
   return (
     <AppContainer
       showPopup={popup}
+      setShowPopup={showPopup}
       popupContent={<CustomizeStoryPopup customizeOptions={customizeOptions} />}
     >
       <View style={styles.container}>

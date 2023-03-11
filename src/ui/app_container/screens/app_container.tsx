@@ -6,6 +6,7 @@ export interface AppContainerProps {
   readonly children: ReactElement
   readonly hideFooter?: boolean
   readonly showPopup?: boolean
+  readonly setShowPopup: (vis: boolean) => void
   readonly popupContent?: ReactElement
 }
 
@@ -13,19 +14,13 @@ export const AppContainer = ({
   children,
   hideFooter = false,
   showPopup = false,
+  setShowPopup,
   popupContent,
 }: AppContainerProps) => {
-  const [isPopupVisible, setIsPopupVisible] = useState<boolean>(showPopup)
-  console.log({ isPopupVisible })
-
-  useEffect(() => {
-    setIsPopupVisible(showPopup)
-  }, [showPopup])
-
   const popup = (
     <View style={styles.popup}>
       <Pressable
-        onPress={() => setIsPopupVisible(false)}
+        onPress={() => setShowPopup(false)}
         style={styles.outsideContentPopup}
       ></Pressable>
       {popupContent}
@@ -34,7 +29,7 @@ export const AppContainer = ({
 
   return (
     <>
-      {isPopupVisible && popup}
+      {showPopup && popup}
       <View
         style={{
           ...styles.container,
