@@ -10,30 +10,11 @@ import {
   CustomizeOption,
   CustomizeStoryPopup,
 } from '../molecules/customize_story_popup'
+import { StateMutate, Store } from '../../../../AppStateMutate'
 
-export const Home = () => {
+export const Home = ({ store, setStore }: StateMutate) => {
   const [isRecording, setIsRecording] = useState(false)
   const [isFetching, setIsFetching] = useState(false)
-
-  const customizeOptions: CustomizeOption[] = [
-    {
-      label: 'Two Characters',
-      isSelected: false,
-    },
-    {
-      label: 'Chapters',
-      isSelected: false,
-    },
-    {
-      label: 'Use me as the main character',
-      isSelected: false,
-    },
-    {
-      label: 'Customize prompt',
-      isSelected: false,
-      customAnswer: true,
-    },
-  ]
 
   const [popup, showPopup] = useState(false)
 
@@ -41,7 +22,12 @@ export const Home = () => {
     <AppContainer
       showPopup={popup}
       setShowPopup={showPopup}
-      popupContent={<CustomizeStoryPopup customizeOptions={customizeOptions} />}
+      popupContent={
+        <CustomizeStoryPopup
+          customizeOptions={store.customizeOptions}
+          store={{ store: store, setStore: setStore }}
+        />
+      }
     >
       <View style={styles.container}>
         <RecordButton

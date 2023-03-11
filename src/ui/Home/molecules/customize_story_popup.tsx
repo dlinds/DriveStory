@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
 import { Typography } from '../../_atoms/typography'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { scale } from '../../../common/utilities'
 import { appColors } from '../../assets/app_colors'
 import { TextOrNumInput } from '../../_atoms/text_input'
+import {
+  setSelectedCustomized,
+  StateMutate,
+  Store,
+} from '../../../../AppStateMutate'
 
 export interface CustomizeOption {
   readonly label: string
@@ -13,10 +18,12 @@ export interface CustomizeOption {
 }
 export interface CustomizeStoryPopupProps {
   readonly customizeOptions: CustomizeOption[]
+  readonly store: StateMutate
 }
 
 export const CustomizeStoryPopup = ({
   customizeOptions,
+  store,
 }: CustomizeStoryPopupProps) => {
   const [selected, setSelected] = useState<Array<CustomizeOption>>([])
 
@@ -25,13 +32,20 @@ export const CustomizeStoryPopup = ({
       setSelected([option])
       return
     }
-    setSelected((prev) => {
-      if (selected.includes(option)) {
-        return prev.filter((i) => i !== option)
-      }
-      return [...prev.filter((i) => i.customAnswer !== true), option]
-    })
+    setSelected((prev) =>
+      selected.includes(option)
+        ? prev.filter((i) => i !== option)
+        : [...prev.filter((i) => i.customAnswer !== true), option]
+    )
   }
+
+  useEffect(() => {
+    setSelectedCustomized(
+      store.store,
+      store.setStore,
+      selected.map((i) => i.label)
+    )
+  }, [selected])
 
   const [value, setValue] = useState<string>()
 

@@ -6,7 +6,7 @@ export interface AppContainerProps {
   readonly children: ReactElement
   readonly hideFooter?: boolean
   readonly showPopup?: boolean
-  readonly setShowPopup: (vis: boolean) => void
+  readonly setShowPopup?: (vis: boolean) => void
   readonly popupContent?: ReactElement
 }
 
@@ -14,7 +14,7 @@ export const AppContainer = ({
   children,
   hideFooter = false,
   showPopup = false,
-  setShowPopup,
+  setShowPopup = () => null,
   popupContent,
 }: AppContainerProps) => {
   const popup = (
