@@ -9,7 +9,6 @@ import {
   setCustomizedText,
   setSelectedCustomized,
   StateMutate,
-  Store,
 } from '../../../../AppStateMutate'
 
 export interface CustomizeOption {
@@ -18,15 +17,21 @@ export interface CustomizeOption {
 }
 export interface CustomizeStoryPopupProps {
   readonly customizeOptions: CustomizeOption[]
-  readonly store: StateMutate
+  readonly currentlySelectedOptions?: CustomizeOption[]
+  readonly setCustomizedText: (value: string) => void
+  readonly setSelectedCustomized: (values: CustomizeOption[]) => void
+  readonly currentCustomText?: string
 }
 
 export const CustomizeStoryPopup = ({
   customizeOptions,
-  store,
+  currentlySelectedOptions = [],
+  setCustomizedText,
+  setSelectedCustomized,
+  currentCustomText = '',
 }: CustomizeStoryPopupProps) => {
   const [selected, setSelected] = useState<Array<CustomizeOption>>(
-    store.store.selectedCustomizedOptions || []
+    currentlySelectedOptions
   )
 
   const handleSelection = (option: CustomizeOption) => {
@@ -34,7 +39,7 @@ export const CustomizeStoryPopup = ({
       setSelected([option])
       return
     }
-    setCustomizedText(store.store, store.setStore, '')
+    setCustomizedText('')
     setSelected((prev) =>
       selected.includes(option)
         ? prev.filter((i) => i !== option)
@@ -43,11 +48,11 @@ export const CustomizeStoryPopup = ({
   }
 
   useEffect(() => {
-    setSelectedCustomized(store.store, store.setStore, selected)
+    setSelectedCustomized(selected)
   }, [selected])
 
   const handleSetCustomValue = (val: string) => {
-    setCustomizedText(store.store, store.setStore, val || '')
+    setCustomizedText(val || '')
   }
 
   return (
@@ -85,7 +90,7 @@ export const CustomizeStoryPopup = ({
                 <TextOrNumInput
                   multiline
                   setValue={handleSetCustomValue}
-                  value={store.store.customText}
+                  value={currentCustomText}
                   placeholder="..."
                   onPressIn={() => handleSelection(option)}
                   disabled={!selected.includes(option)}

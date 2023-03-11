@@ -6,21 +6,23 @@ import { appColors } from '../../assets/app_colors'
 import { Typography } from '../../_atoms/typography'
 
 interface CircularPlusButtonProps {
-  readonly showPopup: () => void
+  readonly actionCallback: () => void
   readonly text?: string
   readonly customText?: string
+  readonly variant?: 'plus' | 'minus'
 }
 
 export const CircularPlusButton = ({
-  showPopup,
+  actionCallback,
   text,
   customText,
+  variant = 'plus',
 }: CircularPlusButtonProps) => {
   return (
-    <TouchableOpacity style={styles.circularButtonRow} onPress={showPopup}>
+    <TouchableOpacity style={styles.circularButtonRow} onPress={actionCallback}>
       <View style={styles.addSettingIcon}>
         <MaterialCommunityIcon
-          name={'plus'}
+          name={variant}
           size={scale(3)}
           color={appColors.offWhite}
         />

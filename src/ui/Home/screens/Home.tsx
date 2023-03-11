@@ -9,7 +9,11 @@ import {
   CustomizeOption,
   CustomizeStoryPopup,
 } from '../molecules/customize_story_popup'
-import { StateMutate } from '../../../../AppStateMutate'
+import {
+  setCustomizedText,
+  setSelectedCustomized,
+  StateMutate,
+} from '../../../../AppStateMutate'
 import { CircularPlusButton } from '../atoms/circular_plus_button'
 
 export const Home = ({ store, setStore }: StateMutate) => {
@@ -18,6 +22,15 @@ export const Home = ({ store, setStore }: StateMutate) => {
 
   const [popup, showPopup] = useState(false)
 
+  const handleUnselectingItem = (label: string) => {
+    const currentlySelected = store.selectedCustomizedOptions
+    setSelectedCustomized(
+      store,
+      setStore,
+      currentlySelected?.filter((i) => i.label !== label) || []
+    )
+  }
+
   return (
     <AppContainer
       showPopup={popup}
@@ -25,7 +38,14 @@ export const Home = ({ store, setStore }: StateMutate) => {
       popupContent={
         <CustomizeStoryPopup
           customizeOptions={store.customizeOptions}
-          store={{ store: store, setStore: setStore }}
+          setCustomizedText={(val: string) =>
+            setCustomizedText(store, setStore, val)
+          }
+          setSelectedCustomized={(vals: CustomizeOption[]) =>
+            setSelectedCustomized(store, setStore, vals)
+          }
+          currentlySelectedOptions={store.selectedCustomizedOptions}
+          currentCustomText={store.customText}
         />
       }
     >
@@ -36,20 +56,20 @@ export const Home = ({ store, setStore }: StateMutate) => {
           showIndicator={isFetching}
         />
         <Typography text="Tell me a children's story about..." />
-        {!store.selectedCustomizedOptions?.length ? (
-          <View style={styles.circularButtonRowEmpty}>
-            <CircularPlusButton showPopup={() => showPopup((prev) => !prev)} />
-          </View>
-        ) : (
-          store.selectedCustomizedOptions?.map((option) => (
-            <CircularPlusButton
-              showPopup={() => showPopup((prev) => !prev)}
-              text={option.label}
-              key={option.label}
-              customText={store.customText}
-            />
-          ))
-        )}
+        {store.selectedCustomizedOptions?.map((option) => (
+          <CircularPlusButton
+            actionCallback={() => handleUnselectingItem(option.label)}
+            text={option.label}
+            key={option.label}
+            customText={store.customText}
+            variant="minus"
+          />
+        ))}
+        <View style={styles.circularButtonRowEmpty}>
+          <CircularPlusButton
+            actionCallback={() => showPopup((prev) => !prev)}
+          />
+        </View>
       </View>
     </AppContainer>
   )

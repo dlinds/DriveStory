@@ -1,40 +1,45 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View } from 'react-native'
+import { initialState } from '../../../../AppStateMutate'
 import {
   CustomizeStoryPopup,
   CustomizeStoryPopupProps,
 } from './customize_story_popup'
 
+const args: CustomizeStoryPopupProps = {
+  customizeOptions: [
+    {
+      label: 'Two Characters',
+    },
+    {
+      label: 'Chapters',
+    },
+    {
+      label: 'Use me as the main character',
+    },
+    {
+      label: 'Customize prompt',
+      customAnswer: true,
+    },
+  ],
+  setCustomizedText: (val: string) => console.log(val),
+  setSelectedCustomized: (vals) => console.log(vals),
+}
+
 const CustomizeStoryPopupMeta = {
   title: 'Home/Customize Story Popup',
   component: CustomizeStoryPopup,
-  args: {
-    customizeOptions: [
-      {
-        label: 'Two Characters',
-        isSelected: false,
-      },
-      {
-        label: 'Chapters',
-        isSelected: false,
-      },
-      {
-        label: 'Use me as the main character',
-        isSelected: false,
-      },
-      {
-        label: 'Customize prompt',
-        isSelected: false,
-        customAnswer: true,
-      },
-    ],
-  } as CustomizeStoryPopupProps,
+  args,
   decorators: [
-    (Story: any) => (
-      <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-        <Story />
-      </View>
-    ),
+    (Story: any) => {
+      return (
+        <View
+          style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}
+        >
+          <Story />
+        </View>
+      )
+    },
   ],
 }
 
