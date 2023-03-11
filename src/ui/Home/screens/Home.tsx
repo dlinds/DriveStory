@@ -31,23 +31,25 @@ export const Home = ({ store, setStore }: StateMutate) => {
     )
   }
 
+  const chooseCustomOptionsPopup = (
+    <CustomizeStoryPopup
+      customizeOptions={store.customizeOptions}
+      setCustomizedText={(val: string) =>
+        setCustomizedText(store, setStore, val)
+      }
+      setSelectedCustomized={(vals: CustomizeOption[]) =>
+        setSelectedCustomized(store, setStore, vals)
+      }
+      currentlySelectedOptions={store.selectedCustomizedOptions}
+      currentCustomText={store.customText}
+    />
+  )
+
   return (
     <AppContainer
       showPopup={popup}
       setShowPopup={showPopup}
-      popupContent={
-        <CustomizeStoryPopup
-          customizeOptions={store.customizeOptions}
-          setCustomizedText={(val: string) =>
-            setCustomizedText(store, setStore, val)
-          }
-          setSelectedCustomized={(vals: CustomizeOption[]) =>
-            setSelectedCustomized(store, setStore, vals)
-          }
-          currentlySelectedOptions={store.selectedCustomizedOptions}
-          currentCustomText={store.customText}
-        />
-      }
+      popupContent={chooseCustomOptionsPopup}
     >
       <View style={styles.container}>
         <RecordButton
@@ -56,16 +58,18 @@ export const Home = ({ store, setStore }: StateMutate) => {
           showIndicator={isFetching}
         />
         <Typography text="Tell me a children's story about..." />
-        {store.selectedCustomizedOptions?.map((option) => (
-          <CircularPlusButton
-            actionCallback={() => handleUnselectingItem(option.label)}
-            text={option.label}
-            key={option.label}
-            customText={store.customText}
-            variant="minus"
-          />
-        ))}
-        <View style={styles.circularButtonRowEmpty}>
+        <View style={styles.circularButtonRowContainer}>
+          {store.selectedCustomizedOptions?.map((option) => (
+            <CircularPlusButton
+              actionCallback={() => handleUnselectingItem(option.label)}
+              text={option.label}
+              key={option.label}
+              customText={store.customText}
+              variant="minus"
+            />
+          ))}
+        </View>
+        <View style={styles.circularButtonRowContainer}>
           <CircularPlusButton
             actionCallback={() => showPopup((prev) => !prev)}
           />
@@ -76,18 +80,13 @@ export const Home = ({ store, setStore }: StateMutate) => {
 }
 
 const styles = StyleSheet.create({
-  circularButtonRowEmpty: {
-    flexDirection: 'row',
-    margin: 0,
-    justifyContent: 'flex-start',
-    alignContent: 'center',
-    alignItems: 'center',
+  circularButtonRowContainer: {
     width: '85%',
   },
   container: {
     flex: 1,
     alignItems: 'center',
-    marginTop: '20%',
+    marginTop: '15%',
     rowGap: scale(2),
   },
 })

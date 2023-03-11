@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   multilineStyle: {
-    height: scale(10),
+    minHeight: scale(10),
     borderColor: appColors.mediumGray,
     borderBottomColor: appColors.mediumGray,
     borderWidth: 2,

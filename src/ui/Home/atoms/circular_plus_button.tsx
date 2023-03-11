@@ -19,17 +19,26 @@ export const CircularPlusButton = ({
   variant = 'plus',
 }: CircularPlusButtonProps) => {
   return (
-    <TouchableOpacity style={styles.circularButtonRow} onPress={actionCallback}>
-      <View style={styles.addSettingIcon}>
-        <MaterialCommunityIcon
-          name={variant}
-          size={scale(3)}
-          color={appColors.offWhite}
-        />
-      </View>
-      {text && <Typography text={text} variant="heading" />}
-      {customText && <Typography text={customText} />}
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity
+        style={styles.circularButtonRow}
+        onPress={actionCallback}
+      >
+        <View style={styles.addSettingIcon}>
+          <MaterialCommunityIcon
+            name={variant}
+            size={scale(3)}
+            color={appColors.offWhite}
+          />
+        </View>
+        {text && <Typography text={text} variant="heading" />}
+      </TouchableOpacity>
+      {customText && (
+        <View style={styles.customTextContainer}>
+          <Typography text={customText} />
+        </View>
+      )}
+    </>
   )
 }
 
@@ -44,7 +53,6 @@ const styles = StyleSheet.create({
     paddingEnd: scale(8),
   },
   addSettingIcon: {
-    //move into own atom
     backgroundColor: appColors.primaryPurple,
     borderColor: appColors.mediumDarkGray,
     borderWidth: scale(0.3),
@@ -55,6 +63,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'flex-start',
     marginRight: scale(2),
-    // marginLeft: scale(3.5),
+  },
+  customTextContainer: {
+    width: '85%',
+    marginLeft: scale(7),
   },
 })
