@@ -25,6 +25,7 @@ export const initialState: Store = {
 export interface Store {
   readonly customizeOptions: CustomizeOption[]
   readonly selectedCustomizedOptions?: CustomizeOption[]
+  readonly customText?: string
 }
 
 export interface StateMutate {
@@ -45,4 +46,13 @@ export const setSelectedCustomized = (
   options: CustomizeOption[]
 ) => {
   setStore({ ...store, selectedCustomizedOptions: options })
+}
+
+export const setCustomizedText = (
+  store: Store,
+  setStore: (store: Store) => void,
+  customText: string
+) => {
+  console.log({ customText })
+  setStore({ ...store, customText })
 }

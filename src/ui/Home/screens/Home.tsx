@@ -46,6 +46,7 @@ export const Home = ({ store, setStore }: StateMutate) => {
               showPopup={() => showPopup((prev) => !prev)}
               text={option.label}
               key={option.label}
+              customText={store.customText}
             />
           ))
         )}

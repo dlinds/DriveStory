@@ -6,6 +6,7 @@ import { scale } from '../../../common/utilities'
 import { appColors } from '../../assets/app_colors'
 import { TextOrNumInput } from '../../_atoms/text_input'
 import {
+  setCustomizedText,
   setSelectedCustomized,
   StateMutate,
   Store,
@@ -34,6 +35,7 @@ export const CustomizeStoryPopup = ({
       setSelected([option])
       return
     }
+    setCustomizedText(store.store, store.setStore, '')
     setSelected((prev) =>
       selected.includes(option)
         ? prev.filter((i) => i !== option)
@@ -44,8 +46,11 @@ export const CustomizeStoryPopup = ({
   useEffect(() => {
     setSelectedCustomized(store.store, store.setStore, selected)
   }, [selected])
-
   const [value, setValue] = useState<string>()
+
+  useEffect(() => {
+    setCustomizedText(store.store, store.setStore, value || '')
+  }, [value])
 
   return (
     <View style={styles.container}>
@@ -82,7 +87,7 @@ export const CustomizeStoryPopup = ({
                 <TextOrNumInput
                   multiline
                   setValue={setValue}
-                  value={value}
+                  value={store.store.customText}
                   placeholder="..."
                   onPressIn={() => handleSelection(option)}
                   disabled={!selected.includes(option)}
