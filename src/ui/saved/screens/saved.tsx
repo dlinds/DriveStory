@@ -10,24 +10,7 @@ import { AppContainer } from '../../app_container/screens/app_container'
 import { appColors } from '../../assets/app_colors'
 import { Typography } from '../../_atoms/typography'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-
-interface StoryCollection {
-  readonly id: string
-  readonly title: string
-  readonly items: SavedStory[]
-}
-
-interface SavedStory {
-  readonly id: string
-  readonly title: string
-  readonly audioFilePaths: AudioFile[]
-}
-
-interface AudioFile {
-  readonly id: string
-  readonly filePath: string
-  readonly storyIndex: number
-}
+import { SavedStory, StoryCollection } from '../../../../AppStorageUtils'
 
 const temp: SavedStory = {
   id: 'ah8a7',
