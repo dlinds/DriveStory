@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     ...defaultTextStyle.text,
     fontFamily: Platform.OS === 'android' ? 'Inter' : 'Helvetica',
     fontWeight: '500',
-    fontSize: scale(1.5),
+    fontSize: scale(1.8),
     lineHeight: scale(2),
   },
   heading: {
