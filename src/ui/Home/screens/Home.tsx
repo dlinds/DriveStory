@@ -9,6 +9,8 @@ import {
   CustomizeStoryPopup,
 } from '../molecules/customize_story_popup'
 import {
+  handleNavigate,
+  Screens,
   setCustomizedText,
   setSelectedCustomized,
   StateMutate,
@@ -49,6 +51,7 @@ export const Home = ({ store, setStore }: StateMutate) => {
       showPopup={popup}
       setShowPopup={showPopup}
       popupContent={chooseCustomOptionsPopup}
+      navigate={(screen: Screens) => handleNavigate(store, setStore, screen)}
     >
       <View style={styles.container}>
         <RecordButton

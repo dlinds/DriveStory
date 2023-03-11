@@ -7,7 +7,11 @@ import { Logo } from '../../_atoms/logo'
 import { Typography } from '../../_atoms/typography'
 import { LoginForm } from '../molecules/login_form'
 import { RegisterForm } from '../molecules/register_form'
-import { StateMutate, handleNavigate } from '../../../../AppStateMutate'
+import {
+  StateMutate,
+  handleNavigate,
+  Screens,
+} from '../../../../AppStateMutate'
 
 type ActiveView = 'login' | 'register' | 'start'
 
@@ -53,7 +57,10 @@ export const Start = ({ store, setStore }: StateMutate) => {
   }, [activeView])
 
   return (
-    <AppContainer hideFooter={true}>
+    <AppContainer
+      hideFooter={true}
+      navigate={(screen: Screens) => handleNavigate(store, setStore, screen)}
+    >
       <View style={styles.screen}>
         <Logo />
         <>

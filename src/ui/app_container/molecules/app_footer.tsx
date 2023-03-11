@@ -4,18 +4,28 @@ import { scale } from '../../../common/utilities'
 import { appColors } from '../../assets/app_colors'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+import { Screens } from '../../../../AppStateMutate'
+interface AppFooterProp {
+  readonly navigate: (screen: Screens) => void
+}
 
-export const AppFooter = () => {
+export const AppFooter = ({ navigate }: AppFooterProp) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity hitSlop={styles.iconHitSlop}>
+      <TouchableOpacity
+        hitSlop={styles.iconHitSlop}
+        onPress={() => navigate('home')}
+      >
         <MaterialCommunityIcon
           name={'home-variant-outline'}
           size={scale(3)}
           color={appColors.offWhite}
         />
       </TouchableOpacity>
-      <TouchableOpacity hitSlop={styles.iconHitSlop}>
+      <TouchableOpacity
+        hitSlop={styles.iconHitSlop}
+        onPress={() => navigate('saved')}
+      >
         <MaterialCommunityIcon
           name={'playlist-music'}
           size={scale(3)}

@@ -1,6 +1,6 @@
 import { CustomizeOption } from './src/ui/Home/molecules/customize_story_popup'
 
-type Screens = 'start' | 'home'
+export type Screens = 'start' | 'home' | 'saved'
 
 export const initialState: Store = {
   customizeOptions: [

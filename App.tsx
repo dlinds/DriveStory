@@ -4,6 +4,7 @@ import { initialState, Store } from './AppStateMutate'
 import { appColors } from './src/ui/assets/app_colors'
 import { CustomizeOption } from './src/ui/Home/molecules/customize_story_popup'
 import { Home } from './src/ui/Home/screens/home'
+import { Saved } from './src/ui/saved/screens/saved'
 import { Start } from './src/ui/start/screens/start'
 
 const App = (): JSX.Element => {
@@ -17,6 +18,8 @@ const App = (): JSX.Element => {
         return <Home {...state} />
       case 'start':
         return <Start {...state} />
+      case 'saved':
+        return <Saved {...state} />
       default:
         return <Start {...state} />
     }

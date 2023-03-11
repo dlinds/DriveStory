@@ -1,5 +1,6 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { Dimensions, Pressable, StyleSheet, View } from 'react-native'
+import { Screens } from '../../../../AppStateMutate'
 import { scale } from '../../../common/utilities'
 import { AppFooter } from '../molecules/app_footer'
 export interface AppContainerProps {
@@ -8,6 +9,7 @@ export interface AppContainerProps {
   readonly showPopup?: boolean
   readonly setShowPopup?: (vis: boolean) => void
   readonly popupContent?: ReactElement
+  readonly navigate: (screen: Screens) => void
 }
 
 export const AppContainer = ({
@@ -16,6 +18,7 @@ export const AppContainer = ({
   showPopup = false,
   setShowPopup = () => null,
   popupContent,
+  navigate,
 }: AppContainerProps) => {
   const popup = (
     <View style={styles.popup}>
@@ -39,7 +42,7 @@ export const AppContainer = ({
         {children}
         {!hideFooter && (
           <View style={styles.footerContainer}>
-            <AppFooter />
+            <AppFooter navigate={navigate} />
           </View>
         )}
       </View>
