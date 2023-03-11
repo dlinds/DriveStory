@@ -19,7 +19,7 @@ export const CircularPlusButton = ({
   variant = 'plus',
 }: CircularPlusButtonProps) => {
   return (
-    <>
+    <View>
       <TouchableOpacity
         style={styles.circularButtonRow}
         onPress={actionCallback}
@@ -38,7 +38,7 @@ export const CircularPlusButton = ({
           <Typography text={customText} />
         </View>
       )}
-    </>
+    </View>
   )
 }
 

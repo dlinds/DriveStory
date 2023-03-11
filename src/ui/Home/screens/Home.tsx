@@ -69,7 +69,7 @@ export const Home = ({ store, setStore }: StateMutate) => {
             />
           ))}
         </View>
-        <View style={styles.circularButtonRowContainer}>
+        <View style={styles.circularButtonRowContainerEmpty}>
           <CircularPlusButton
             actionCallback={() => showPopup((prev) => !prev)}
           />
@@ -81,6 +81,10 @@ export const Home = ({ store, setStore }: StateMutate) => {
 
 const styles = StyleSheet.create({
   circularButtonRowContainer: {
+    width: '85%',
+    rowGap: scale(2),
+  },
+  circularButtonRowContainerEmpty: {
     width: '85%',
   },
   container: {
