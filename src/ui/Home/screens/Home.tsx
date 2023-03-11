@@ -9,7 +9,7 @@ import {
   CustomizeOption,
   CustomizeStoryPopup,
 } from '../molecules/customize_story_popup'
-import { StateMutate, Store } from '../../../../AppStateMutate'
+import { StateMutate } from '../../../../AppStateMutate'
 import { CircularPlusButton } from '../atoms/circular_plus_button'
 
 export const Home = ({ store, setStore }: StateMutate) => {
@@ -42,12 +42,11 @@ export const Home = ({ store, setStore }: StateMutate) => {
           </View>
         ) : (
           store.selectedCustomizedOptions?.map((option) => (
-            <View style={styles.circularButtonRow} key={option.label}>
-              <CircularPlusButton
-                showPopup={() => showPopup((prev) => !prev)}
-              />
-              <Typography text={option.label} variant="heading" />
-            </View>
+            <CircularPlusButton
+              showPopup={() => showPopup((prev) => !prev)}
+              text={option.label}
+              key={option.label}
+            />
           ))
         )}
       </View>
@@ -56,15 +55,6 @@ export const Home = ({ store, setStore }: StateMutate) => {
 }
 
 const styles = StyleSheet.create({
-  circularButtonRow: {
-    flexDirection: 'row',
-    margin: 0,
-    justifyContent: 'flex-start',
-    alignContent: 'center',
-    alignItems: 'center',
-    width: '85%',
-    paddingEnd: scale(8),
-  },
   circularButtonRowEmpty: {
     flexDirection: 'row',
     margin: 0,
