@@ -20,6 +20,7 @@ export interface TextOrNumInputProps {
   readonly autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters'
   readonly multiline?: boolean
   readonly onPressIn?: () => void
+  readonly disabled?: boolean
 }
 
 export const TextOrNumInput = ({
@@ -31,6 +32,7 @@ export const TextOrNumInput = ({
   autoCapitalize = 'sentences',
   multiline = false,
   onPressIn,
+  disabled,
 }: TextOrNumInputProps) => {
   const [localValue, setLocalValue] = useState(value)
 
@@ -76,6 +78,7 @@ export const TextOrNumInput = ({
         autoCapitalize={autoCapitalize}
         multiline={multiline}
         onPressIn={onPressIn}
+        editable={!disabled}
       >
         {localValue}
       </TextInput>

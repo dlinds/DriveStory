@@ -7,33 +7,30 @@ import { appColors } from '../../assets/app_colors'
 import { TextOrNumInput } from '../../_atoms/text_input'
 
 export interface CustomizeOption {
-  label: string
-  isSelected: boolean
-  customAnswer?: boolean
+  readonly label: string
+  readonly isSelected: boolean
+  readonly customAnswer?: boolean
 }
 export interface CustomizeStoryPopupProps {
   readonly customizeOptions: CustomizeOption[]
 }
 
-// const generateCheckmarkIcon = (option: CustomizeOption) => {
-//   const [isSelected, setIsSelected] = useState<boolean>(option.isSelected)
-//   const [value, setValue] = useState<string>()
-
-//   return (
-
-//   )
-// }
-
 export const CustomizeStoryPopup = ({
   customizeOptions,
 }: CustomizeStoryPopupProps) => {
-  const [selected, setSelected] = useState<ReadonlyArray<CustomizeOption>>([])
+  const [selected, setSelected] = useState<Array<CustomizeOption>>([])
 
   const handleSelection = (option: CustomizeOption) => {
     if (option.customAnswer) {
       setSelected([option])
       return
     }
+    setSelected((prev) => {
+      if (selected.includes(option)) {
+        return prev.filter((i) => i !== option)
+      }
+      return [...prev.filter((i) => i.customAnswer !== true), option]
+    })
   }
 
   const [value, setValue] = useState<string>()
@@ -60,7 +57,13 @@ export const CustomizeStoryPopup = ({
                 size={scale(3)}
                 color={appColors.primaryPurple}
               />
-              <Typography text={option.label} variant="heading" />
+              <Typography
+                text={option.label}
+                variant="heading"
+                textColor={
+                  !selected.includes(option) ? appColors.mediumGray : undefined
+                }
+              />
             </View>
             {option.customAnswer && (
               <View style={styles.customTextContainer}>
@@ -70,6 +73,7 @@ export const CustomizeStoryPopup = ({
                   value={value}
                   placeholder="..."
                   onPressIn={() => handleSelection(option)}
+                  disabled={!selected.includes(option)}
                 />
               </View>
             )}
