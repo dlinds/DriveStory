@@ -25,7 +25,9 @@ export const CustomizeStoryPopup = ({
   customizeOptions,
   store,
 }: CustomizeStoryPopupProps) => {
-  const [selected, setSelected] = useState<Array<CustomizeOption>>([])
+  const [selected, setSelected] = useState<Array<CustomizeOption>>(
+    store.store.selectedCustomizedOptions || []
+  )
 
   const handleSelection = (option: CustomizeOption) => {
     if (option.customAnswer) {
@@ -40,11 +42,7 @@ export const CustomizeStoryPopup = ({
   }
 
   useEffect(() => {
-    setSelectedCustomized(
-      store.store,
-      store.setStore,
-      selected.map((i) => i.label)
-    )
+    setSelectedCustomized(store.store, store.setStore, selected)
   }, [selected])
 
   const [value, setValue] = useState<string>()
