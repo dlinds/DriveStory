@@ -41,7 +41,6 @@ export const setSelectedCustomized = (
   setStore: (store: Store) => void,
   options: CustomizeOption[]
 ) => {
-  console.log({ options })
   const customText =
     options.filter((i) => i.customAnswer === true).length >= 1
       ? store.customText
@@ -54,6 +53,5 @@ export const setCustomizedText = (
   setStore: (store: Store) => void,
   customText: string
 ) => {
-  console.log({ customText })
   setStore({ ...store, customText })
 }
