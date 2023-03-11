@@ -1,5 +1,7 @@
 import { CustomizeOption } from './src/ui/Home/molecules/customize_story_popup'
 
+type Screens = 'start' | 'home'
+
 export const initialState: Store = {
   customizeOptions: [
     {
@@ -16,12 +18,14 @@ export const initialState: Store = {
       customAnswer: true,
     },
   ],
+  currentScreen: 'start',
 }
 
 export interface Store {
   readonly customizeOptions: CustomizeOption[]
   readonly selectedCustomizedOptions?: CustomizeOption[]
   readonly customText?: string
+  readonly currentScreen: Screens
 }
 
 export interface StateMutate {
@@ -54,4 +58,12 @@ export const setCustomizedText = (
   customText: string
 ) => {
   setStore({ ...store, customText })
+}
+
+export const handleNavigate = (
+  store: Store,
+  setStore: (store: Store) => void,
+  screen: Screens
+) => {
+  setStore({ ...store, currentScreen: screen })
 }

@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
-import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { scale } from '../../../common/utilities'
 import { AppContainer } from '../../app_container/screens/app_container'
 import { Typography } from '../../_atoms/typography'
 import { RecordButton } from '../atoms/record_button'
-import { appColors } from '../../assets/app_colors'
 import {
   CustomizeOption,
   CustomizeStoryPopup,

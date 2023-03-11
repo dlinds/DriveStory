@@ -4,10 +4,23 @@ import { initialState, Store } from './AppStateMutate'
 import { appColors } from './src/ui/assets/app_colors'
 import { CustomizeOption } from './src/ui/Home/molecules/customize_story_popup'
 import { Home } from './src/ui/Home/screens/home'
-import { About } from './src/ui/start/screens/start'
+import { Start } from './src/ui/start/screens/start'
 
 const App = (): JSX.Element => {
   const [store, setStore] = useState<Store>(initialState)
+
+  const getCurrentScreen = () => {
+    const state = { store: store, setStore: setStore }
+
+    switch (store.currentScreen) {
+      case 'home':
+        return <Home {...state} />
+      case 'start':
+        return <Start {...state} />
+      default:
+        return <Start {...state} />
+    }
+  }
 
   return (
     <SafeAreaView style={{ backgroundColor: appColors.darkGray }}>
@@ -16,8 +29,7 @@ const App = (): JSX.Element => {
         backgroundColor={appColors.darkGray}
       />
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        {/* <About /> */}
-        <Home store={store} setStore={setStore} />
+        {getCurrentScreen()}
       </ScrollView>
     </SafeAreaView>
   )

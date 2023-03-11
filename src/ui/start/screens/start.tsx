@@ -7,14 +7,19 @@ import { Logo } from '../../_atoms/logo'
 import { Typography } from '../../_atoms/typography'
 import { LoginForm } from '../molecules/login_form'
 import { RegisterForm } from '../molecules/register_form'
+import { StateMutate, handleNavigate } from '../../../../AppStateMutate'
 
-type ScreenType = 'login' | 'register' | 'start'
+type ActiveView = 'login' | 'register' | 'start'
 
-export const About = () => {
-  const handleSetScreen = (screen: ScreenType) => {
-    switch (screen) {
+export const Start = ({ store, setStore }: StateMutate) => {
+  const handleSetScreen = (view: ActiveView) => {
+    switch (view) {
       case 'login':
-        setCurrentScreen(<LoginForm loginCallback={() => console.log('')} />)
+        setCurrentScreen(
+          <LoginForm
+            loginCallback={() => handleNavigate(store, setStore, 'home')}
+          />
+        )
         break
       case 'register':
         setCurrentScreen(
@@ -30,10 +35,10 @@ export const About = () => {
   const defaultStart = (
     <>
       <View style={styles.textContainer}>
-        <TouchableOpacity onPress={() => setScreenElement('login')}>
+        <TouchableOpacity onPress={() => setActiveView('login')}>
           <Typography text="Login" variant="headingLarge" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setScreenElement('register')}>
+        <TouchableOpacity onPress={() => setActiveView('register')}>
           <Typography text="Register" variant="headingLarge" />
         </TouchableOpacity>
       </View>
@@ -41,11 +46,11 @@ export const About = () => {
   )
 
   const [currentScreen, setCurrentScreen] = useState<ReactElement>(defaultStart)
-  const [screenElement, setScreenElement] = useState<ScreenType>('start')
+  const [activeView, setActiveView] = useState<ActiveView>('start')
 
   useEffect(() => {
-    handleSetScreen(screenElement)
-  }, [screenElement])
+    handleSetScreen(activeView)
+  }, [activeView])
 
   return (
     <AppContainer hideFooter={true}>
@@ -53,9 +58,9 @@ export const About = () => {
         <Logo />
         <>
           {currentScreen}
-          {screenElement !== 'start' && (
+          {activeView !== 'start' && (
             <TouchableOpacity
-              onPress={() => setScreenElement('start')}
+              onPress={() => setActiveView('start')}
               hitSlop={styles.backHitSlop}
               style={styles.back}
             >
