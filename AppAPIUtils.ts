@@ -2,6 +2,8 @@ import Config from 'react-native-config'
 import RNFS from 'react-native-fs'
 import Sound from 'react-native-sound'
 import { handleSaveFileToDevice } from './AppStorageUtils'
+import { Configuration, OpenAIApi } from 'openai'
+import Voice from '@react-native-voice/voice'
 
 export const handleGenerateAndSaveStory = async (
   story: string
@@ -62,4 +64,44 @@ export const playStory = (path: string) => {
 
     return null
   })
+}
+
+interface queryOpenAiProps {
+  readonly prompt: string
+  readonly max_tokens?: number
+  readonly temperature?: any
+  readonly model?: string
+}
+
+const models = {
+  davinci3: 'text-davinci-003',
+}
+
+const configuration = new Configuration({
+  organization: Config.CHAT_GPT_ORG,
+  apiKey: Config.CHAT_GPT_KEY,
+})
+
+const openAiConfig = new OpenAIApi(configuration)
+
+export const queryOpenAi = async ({
+  prompt,
+  max_tokens = 500,
+  temperature = undefined,
+  model = models.davinci3,
+}: queryOpenAiProps) => {
+  console.log({ prompt })
+  try {
+    const resp = await openAiConfig.createCompletion({
+      model,
+      prompt: `Tell me a five sentence childrens story that includes the topics: ${prompt}`,
+      max_tokens,
+      temperature,
+    })
+
+    return resp
+  } catch (e) {
+    console.error({ queryOpenAi: e })
+    throw e
+  }
 }
