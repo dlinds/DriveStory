@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import {
   handleNavigate,
+  removeStoryFromStore,
   Screens,
   StateMutate,
 } from '../../../../AppStateMutate'
@@ -12,7 +13,6 @@ import { Typography } from '../../_atoms/typography'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { SavedStory, StoryCollection } from '../../../../AppStorageUtils'
 import { SavedItem } from '../atoms/saved_item'
-import SelectDropdown from 'react-native-select-dropdown'
 
 export const Saved = ({ store, setStore }: StateMutate) => {
   const currentCollection: StoryCollection | undefined = store.collections
@@ -27,17 +27,27 @@ export const Saved = ({ store, setStore }: StateMutate) => {
     []
   )
 
-  const allCollections = store.collections
-  const collectionNames: string[] = allCollections
-    ? allCollections.map((i) => i.title)
-    : ['']
+  const collectionNames: string[] = store.collections
+    ? store.collections.map((i) => i.title)
+    : []
 
   const [isDropdownOpen, setIsDropDownOpen] = useState(false)
+  const [showPopup, setShowPopup] = useState(false)
+
+  const popupContent = (
+    <View style={{ height: 100, width: 100, backgroundColor: 'pink' }} />
+  )
 
   return (
-    <Pressable onPress={() => setIsDropDownOpen(false)}>
-      <AppContainer
-        navigate={(screen: Screens) => handleNavigate(store, setStore, screen)}
+    <AppContainer
+      showPopup={showPopup}
+      popupContent={popupContent}
+      setShowPopup={setShowPopup}
+      navigate={(screen: Screens) => handleNavigate(store, setStore, screen)}
+    >
+      <Pressable
+        onPress={() => setIsDropDownOpen(false)}
+        style={styles.pressableContainer}
       >
         <View style={styles.container}>
           <View style={styles.headingContainer}>
@@ -83,19 +93,22 @@ export const Saved = ({ store, setStore }: StateMutate) => {
                 key={item.storyId}
                 id={item.storyId}
                 label={item.title}
-                playPauseItem={() => console.log(item.storyId)}
-                addToCollection={() => console.log(item.storyId)}
-                deleteItem={() => console.log(item.storyId)}
+                playPauseItem={() => console.log(item.audioFilePaths)}
+                addToCollection={() => setShowPopup(true)}
+                deleteItem={() => removeStoryFromStore(store, setStore, item)}
               />
             ))}
           </View>
         </View>
-      </AppContainer>
-    </Pressable>
+      </Pressable>
+    </AppContainer>
   )
 }
 
 const styles = StyleSheet.create({
+  pressableContainer: {
+    flex: 1,
+  },
   container: {
     rowGap: scale(2),
   },

@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Typography } from '../../_atoms/typography'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { scale } from '../../../common/utilities'
 import { appColors } from '../../assets/app_colors'
 import { TextOrNumInput } from '../../_atoms/text_input'
-import {
-  setCustomizedText,
-  setSelectedCustomized,
-  StateMutate,
-} from '../../../../AppStateMutate'
 
 export interface CustomizeOption {
   readonly label: string
@@ -41,7 +36,7 @@ export const CustomizeStoryPopup = ({
     }
     setCustomizedText('')
     setSelected((prev) =>
-      selected.includes(option)
+      prev.includes(option)
         ? prev.filter((i) => i !== option)
         : [...prev.filter((i) => i.customAnswer !== true), option]
     )
@@ -61,44 +56,47 @@ export const CustomizeStoryPopup = ({
         <Typography variant="headingLarge" text="Customize the story" />
       </View>
       <View>
-        {customizeOptions.map((option) => (
-          <TouchableOpacity
-            onPress={() => handleSelection(option)}
-            style={styles.optionContainer}
-            key={option.label}
-          >
-            <View style={styles.checkmarkRowContainer}>
-              <MaterialCommunityIcon
-                name={
-                  selected.includes(option)
-                    ? 'check-circle'
-                    : 'checkbox-blank-circle-outline'
-                }
-                size={scale(3)}
-                color={appColors.primaryPurple}
-              />
-              <Typography
-                text={option.label}
-                variant="heading"
-                textColor={
-                  !selected.includes(option) ? appColors.mediumGray : undefined
-                }
-              />
-            </View>
-            {option.customAnswer && (
-              <View style={styles.customTextContainer}>
-                <TextOrNumInput
-                  multiline
-                  setValue={handleSetCustomValue}
-                  value={currentCustomText}
-                  placeholder="..."
-                  onPressIn={() => handleSelection(option)}
-                  disabled={!selected.includes(option)}
+        {customizeOptions.map((option, index) => {
+          const isItemSelected =
+            currentlySelectedOptions.filter((i) => i.label === option.label)
+              .length > 0 || selected.includes(option)
+          return (
+            <TouchableOpacity
+              onPress={() => handleSelection(option)}
+              style={styles.optionContainer}
+              key={index}
+            >
+              <View style={styles.checkmarkRowContainer}>
+                <MaterialCommunityIcon
+                  name={
+                    isItemSelected
+                      ? 'check-circle'
+                      : 'checkbox-blank-circle-outline'
+                  }
+                  size={scale(3)}
+                  color={appColors.primaryPurple}
+                />
+                <Typography
+                  text={option.label}
+                  variant="heading"
+                  textColor={isItemSelected ? undefined : appColors.mediumGray}
                 />
               </View>
-            )}
-          </TouchableOpacity>
-        ))}
+              {option.customAnswer && (
+                <View style={styles.customTextContainer}>
+                  <TextOrNumInput
+                    multiline
+                    setValue={handleSetCustomValue}
+                    value={currentCustomText}
+                    placeholder="..."
+                    onPressIn={() => handleSelection(option)}
+                    disabled={!selected.includes(option)}
+                  />
+                </View>
+              )}
+            </TouchableOpacity>
+          )
+        })}
       </View>
     </View>
   )

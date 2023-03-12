@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView, ScrollView, StatusBar } from 'react-native'
 import { initialState, Store } from './AppStateMutate'
+import { handleGetStoreFromState } from './AppStorageUtils'
 import { appColors } from './src/ui/assets/app_colors'
-import { CustomizeOption } from './src/ui/Home/molecules/customize_story_popup'
 import { Home } from './src/ui/Home/screens/home'
 import { Saved } from './src/ui/saved/screens/saved'
 import { Start } from './src/ui/start/screens/start'
 
 const App = (): JSX.Element => {
   const [store, setStore] = useState<Store>(initialState)
+
+  useEffect(() => {
+    const storeFromLocalStore = async () => {
+      await handleGetStoreFromState().then((res) => setStore(res))
+    }
+    storeFromLocalStore()
+  }, [])
 
   const getCurrentScreen = () => {
     const state = { store: store, setStore: setStore }

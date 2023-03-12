@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { View } from 'react-native'
-import { initialState } from '../../../../AppStateMutate'
 import {
   CustomizeStoryPopup,
   CustomizeStoryPopupProps,
