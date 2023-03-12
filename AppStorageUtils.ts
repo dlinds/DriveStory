@@ -1,17 +1,17 @@
 export interface StoryCollection {
   readonly id: string
   readonly title: string
-  readonly items: SavedStory[]
+  readonly itemIds: string[]
 }
 
 export interface SavedStory {
-  readonly id: string
+  readonly storyId: string
   readonly title: string
   readonly audioFilePaths: AudioFile[]
 }
 
 export interface AudioFile {
-  readonly id: string
+  readonly fileId: string
   readonly filePath: string
   readonly storyIndex: number
 }

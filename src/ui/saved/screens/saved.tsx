@@ -13,48 +13,19 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import { SavedStory, StoryCollection } from '../../../../AppStorageUtils'
 import { SavedItem } from '../atoms/saved_item'
 
-const temp: SavedStory[] = [
-  {
-    id: 'ah8a7',
-    title: 'Goblins, ghouls, and mermaids and more',
-    audioFilePaths: [
-      {
-        id: '9j78ho7',
-        filePath: 'file://',
-        storyIndex: 1,
-      },
-      {
-        id: '8h77hi8',
-        filePath: 'file://',
-        storyIndex: 2,
-      },
-      {
-        id: '2524fyda',
-        filePath: 'file://',
-        storyIndex: 3,
-      },
-    ],
-  },
-  {
-    id: 'fj348',
-    title: 'Giant trees and a chicken',
-    audioFilePaths: [
-      {
-        id: '83offsr',
-        filePath: 'file://',
-        storyIndex: 1,
-      },
-    ],
-  },
-]
-
-const allCollections: StoryCollection = {
-  id: '7h63i7a3i',
-  title: 'all',
-  items: [...temp],
-}
-
 export const Saved = ({ store, setStore }: StateMutate) => {
+  const currentCollection: StoryCollection | undefined = store.collections
+    ? store.collections.filter((i) => i.id === '7h63i7a3i')[0]
+    : undefined
+
+  const itemsToDisplay = store.savedStories?.reduce<SavedStory[]>(
+    (acc, curr) =>
+      !!currentCollection && currentCollection.itemIds.includes(curr.storyId)
+        ? [...acc, curr]
+        : [...acc],
+    []
+  )
+
   return (
     <AppContainer
       navigate={(screen: Screens) => handleNavigate(store, setStore, screen)}
@@ -75,14 +46,14 @@ export const Saved = ({ store, setStore }: StateMutate) => {
           </Pressable>
         </View>
         <View style={styles.listContainer}>
-          {allCollections.items.map((item) => (
+          {itemsToDisplay?.map((item) => (
             <SavedItem
-              key={item.id}
-              id={item.id}
+              key={item.storyId}
+              id={item.storyId}
               label={item.title}
-              playPauseItem={() => console.log(item.id)}
-              addToCollection={() => console.log(item.id)}
-              deleteItem={() => console.log(item.id)}
+              playPauseItem={() => console.log(item.storyId)}
+              addToCollection={() => console.log(item.storyId)}
+              deleteItem={() => console.log(item.storyId)}
             />
           ))}
         </View>
