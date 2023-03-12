@@ -11,33 +11,47 @@ import { appColors } from '../../assets/app_colors'
 import { Typography } from '../../_atoms/typography'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { SavedStory, StoryCollection } from '../../../../AppStorageUtils'
+import { SavedItem } from '../atoms/saved_item'
 
-const temp: SavedStory = {
-  id: 'ah8a7',
-  title: 'Goblins, ghouls, and mermainds',
-  audioFilePaths: [
-    {
-      id: '9j78ho7',
-      filePath: 'file://',
-      storyIndex: 1,
-    },
-    {
-      id: '8h77hi8',
-      filePath: 'file://',
-      storyIndex: 2,
-    },
-    {
-      id: '2524fyda',
-      filePath: 'file://',
-      storyIndex: 3,
-    },
-  ],
-}
+const temp: SavedStory[] = [
+  {
+    id: 'ah8a7',
+    title: 'Goblins, ghouls, and mermaids and more',
+    audioFilePaths: [
+      {
+        id: '9j78ho7',
+        filePath: 'file://',
+        storyIndex: 1,
+      },
+      {
+        id: '8h77hi8',
+        filePath: 'file://',
+        storyIndex: 2,
+      },
+      {
+        id: '2524fyda',
+        filePath: 'file://',
+        storyIndex: 3,
+      },
+    ],
+  },
+  {
+    id: 'fj348',
+    title: 'Giant trees and a chicken',
+    audioFilePaths: [
+      {
+        id: '83offsr',
+        filePath: 'file://',
+        storyIndex: 1,
+      },
+    ],
+  },
+]
 
 const allCollections: StoryCollection = {
   id: '7h63i7a3i',
   title: 'all',
-  items: [temp],
+  items: [...temp],
 }
 
 export const Saved = ({ store, setStore }: StateMutate) => {
@@ -62,24 +76,14 @@ export const Saved = ({ store, setStore }: StateMutate) => {
         </View>
         <View style={styles.listContainer}>
           {allCollections.items.map((item) => (
-            <View style={styles.listItem} key={item.id}>
-              <Typography text={item.title} />
-              <MaterialCommunityIcon
-                name={'plus'}
-                size={scale(3)}
-                color={appColors.offWhite}
-              />
-              <MaterialCommunityIcon
-                name={'play'}
-                size={scale(3)}
-                color={appColors.offWhite}
-              />
-              <MaterialCommunityIcon
-                name={'trash-can'}
-                size={scale(2.7)}
-                color={appColors.offWhite}
-              />
-            </View>
+            <SavedItem
+              key={item.id}
+              id={item.id}
+              label={item.title}
+              playPauseItem={() => console.log(item.id)}
+              addToCollection={() => console.log(item.id)}
+              deleteItem={() => console.log(item.id)}
+            />
           ))}
         </View>
       </View>
@@ -118,12 +122,6 @@ const styles = StyleSheet.create({
     rowGap: scale(2),
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: scale(0.5),
-  },
-  listItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    columnGap: scale(1),
+    marginTop: scale(2),
   },
 })
