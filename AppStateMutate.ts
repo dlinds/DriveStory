@@ -1,9 +1,12 @@
 import {
+  AudioFile,
   handleSaveStoreToFS,
   SavedStory,
   StoryCollection,
 } from './AppStorageUtils'
 import { CustomizeOption } from './src/ui/Home/molecules/customize_story_popup'
+import 'react-native-get-random-values'
+import { v4 as uuidv4 } from 'uuid'
 
 export type Screens = 'start' | 'home' | 'saved'
 
@@ -73,6 +76,31 @@ export const setCustomizedText = (
   const updatedStore = { ...store, customText }
   setStore({ ...updatedStore })
   handleSaveStoreToFS(updatedStore)
+}
+
+export const addStoryToStore = async (
+  store: Store,
+  setStore: (store: Store) => void,
+  title: string,
+  filePaths: string[]
+) => {
+  const audioFilePaths: AudioFile[] = filePaths.map((path, index) => ({
+    fileId: uuidv4(),
+    filePath: path,
+    storyIndex: index,
+  }))
+  const storyObject: SavedStory = {
+    storyId: uuidv4(),
+    title,
+    audioFilePaths,
+  }
+
+  const updatedStories = store.savedStories
+    ? [...store.savedStories, storyObject]
+    : [storyObject]
+  const updatedStore = { ...store, savedStories: [...updatedStories] }
+  setStore(updatedStore)
+  await handleSaveStoreToFS(updatedStore)
 }
 
 export const removeStoryFromStore = (

@@ -13,19 +13,20 @@ import { Typography } from '../../_atoms/typography'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { SavedStory, StoryCollection } from '../../../../AppStorageUtils'
 import { SavedItem } from '../atoms/saved_item'
+import { playStory } from '../../../../AppAPIUtils'
 
 export const Saved = ({ store, setStore }: StateMutate) => {
-  const currentCollection: StoryCollection | undefined = store.collections
-    ? store.collections.filter((i) => i.id === '7h63i7a3i')[0]
-    : undefined
+  // const currentCollection: StoryCollection | undefined = store.collections
+  //   ? store.collections.filter((i) => i.id === '7h63i7a3i')[0]
+  //   : undefined
 
-  const itemsToDisplay = store.savedStories?.reduce<SavedStory[]>(
-    (acc, curr) =>
-      !!currentCollection && currentCollection.itemIds.includes(curr.storyId)
-        ? [...acc, curr]
-        : [...acc],
-    []
-  )
+  // const itemsToDisplay = store.savedStories?.reduce<SavedStory[]>(
+  //   (acc, curr) =>
+  //     !!currentCollection && currentCollection.itemIds.includes(curr.storyId)
+  //       ? [...acc, curr]
+  //       : [...acc],
+  //   []
+  // )
 
   const collectionNames: string[] = store.collections
     ? store.collections.map((i) => i.title)
@@ -88,12 +89,12 @@ export const Saved = ({ store, setStore }: StateMutate) => {
             )}
           </View>
           <View style={styles.listContainer}>
-            {itemsToDisplay?.map((item) => (
+            {store.savedStories?.map((item) => (
               <SavedItem
                 key={item.storyId}
                 id={item.storyId}
                 label={item.title}
-                playPauseItem={() => console.log(item.audioFilePaths)}
+                playPauseItem={() => playStory(item.audioFilePaths[0].filePath)}
                 addToCollection={() => setShowPopup(true)}
                 deleteItem={() => removeStoryFromStore(store, setStore, item)}
               />

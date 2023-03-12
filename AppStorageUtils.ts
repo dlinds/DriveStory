@@ -19,9 +19,9 @@ export interface AudioFile {
   readonly storyIndex: number
 }
 
-export const handleSaveStoreToFS = (store: Store) => {
+export const handleSaveStoreToFS = async (store: Store) => {
   const path = RNFS.DocumentDirectoryPath + '/store.txt'
-  RNFS.writeFile(path, JSON.stringify(store), 'utf8')
+  await RNFS.writeFile(path, JSON.stringify(store), 'utf8')
     .then((success) => {
       // console.log('FILE WRITTEN!')
     })
@@ -31,10 +31,21 @@ export const handleSaveStoreToFS = (store: Store) => {
 }
 
 export const handleGetStoreFromState = async (): Promise<Store> => {
-  const store = await RNFS.readFile(
+  const store: string = await RNFS.readFile(
     RNFS.DocumentDirectoryPath + '/store.txt'
-  ).then((result: string) => {
-    return Promise.resolve(result)
-  })
+  )
+    .then((result: string) => {
+      return Promise.resolve(result)
+    })
+    .catch((e) => e)
   return JSON.parse(store)
+}
+
+export const handleSaveFileToDevice = async (path: string, data: string) => {
+  try {
+    return await RNFS.writeFile(path, data, 'base64')
+  } catch (err) {
+    console.warn(err)
+  }
+  return null
 }

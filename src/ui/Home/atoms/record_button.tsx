@@ -20,15 +20,15 @@ export const RecordButton = ({
   isRecording,
   showIndicator = false,
 }: RecordButtonProps) => {
-  const [localIsRecording, setLocalIsRecording] = useState(isRecording)
+  // const [localIsRecording, setLocalIsRecording] = useState(isRecording)
 
-  useEffect(() => {
-    setIsRecording(localIsRecording)
-  }, [localIsRecording])
+  // useEffect(() => {
+  //   setIsRecording(localIsRecording)
+  // }, [localIsRecording])
 
   const recordButtonStyle = {
     ...styles.container,
-    ...(localIsRecording ? styles.recordingContainer : styles.defaultContainer),
+    ...(isRecording ? styles.recordingContainer : styles.defaultContainer),
   }
 
   const activityIndicator = (
@@ -38,7 +38,7 @@ export const RecordButton = ({
   return (
     <TouchableOpacity
       disabled={showIndicator}
-      onPress={() => setLocalIsRecording((prev) => !prev)}
+      onPress={() => setIsRecording(!isRecording)}
       style={recordButtonStyle}
     >
       {showIndicator && activityIndicator}

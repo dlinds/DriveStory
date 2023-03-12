@@ -9,6 +9,7 @@ import {
   CustomizeStoryPopup,
 } from '../molecules/customize_story_popup'
 import {
+  addStoryToStore,
   handleNavigate,
   Screens,
   setCustomizedText,
@@ -16,8 +17,10 @@ import {
   StateMutate,
 } from '../../../../AppStateMutate'
 import { CircularPlusButton } from '../atoms/circular_plus_button'
+import { handleGenerateAndSaveStory, playStory } from '../../../../AppAPIUtils'
 
 export const Home = ({ store, setStore }: StateMutate) => {
+  // console.log({ store })
   const [isRecording, setIsRecording] = useState(false)
   const [isFetching, setIsFetching] = useState(false)
 
@@ -46,6 +49,24 @@ export const Home = ({ store, setStore }: StateMutate) => {
     />
   )
 
+  const handleStartRecording = async () => {
+    setIsRecording(true)
+    const title = 'Pink ponies and apple sauce'
+    await handleGenerateAndSaveStory(title)
+      .then(async (result) => await handleAddStoryToStore(result, title))
+      .catch((generateError) => console.log({ generateError }))
+      .finally(() => {
+        setIsRecording(false)
+      })
+  }
+
+  const handleAddStoryToStore = async (path: string, title: string) => {
+    await addStoryToStore(store, setStore, title, [path])
+    setTimeout(() => {
+      playStory(path)
+    }, 1000)
+  }
+
   return (
     <AppContainer
       showPopup={popup}
@@ -55,7 +76,7 @@ export const Home = ({ store, setStore }: StateMutate) => {
     >
       <View style={styles.container}>
         <RecordButton
-          setIsRecording={setIsRecording}
+          setIsRecording={() => handleStartRecording()}
           isRecording={isRecording}
           showIndicator={isFetching}
         />
