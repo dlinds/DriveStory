@@ -61,7 +61,7 @@ export const setSelectedCustomized = (
     selectedCustomizedOptions: options,
     customText,
   }
-  setStore(updatedStore)
+  setStore({ ...updatedStore })
   handleSaveStoreToFS(updatedStore)
 }
 
@@ -71,7 +71,7 @@ export const setCustomizedText = (
   customText: string
 ) => {
   const updatedStore = { ...store, customText }
-  setStore(updatedStore)
+  setStore({ ...updatedStore })
   handleSaveStoreToFS(updatedStore)
 }
 
@@ -86,7 +86,7 @@ export const removeStoryFromStore = (
     ...removedFromCollectionsStore,
     savedStories: newSavedItems,
   }
-  setStore(updatedStore)
+  setStore({ ...updatedStore })
   handleSaveStoreToFS(updatedStore)
 }
 
@@ -104,7 +104,7 @@ export const removeCollectionFromStore = (
 ) => {
   const newSavedCollections = store.collections?.filter((i) => i !== collection)
   const updatedStore: Store = { ...store, collections: newSavedCollections }
-  setStore(updatedStore)
+  setStore({ ...updatedStore })
   handleSaveStoreToFS(updatedStore)
 }
 
@@ -114,6 +114,6 @@ export const handleNavigate = (
   screen: Screens
 ) => {
   const updatedStore = { ...store, currentScreen: screen }
-  setStore(updatedStore)
+  setStore({ ...updatedStore })
   handleSaveStoreToFS(updatedStore)
 }
