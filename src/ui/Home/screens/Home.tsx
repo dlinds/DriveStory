@@ -18,12 +18,9 @@ import {
 } from '../../../../AppStateMutate'
 import { CircularPlusButton } from '../atoms/circular_plus_button'
 import { handleGenerateAndSaveStory, playStory } from '../../../../AppAPIUtils'
+import Voice, { SpeechResultsEvent } from '@react-native-voice/voice'
 
 export const Home = ({ store, setStore }: StateMutate) => {
-  // console.log({ store })
-  const [isRecording, setIsRecording] = useState(false)
-  const [isFetching, setIsFetching] = useState(false)
-
   const [popup, showPopup] = useState(false)
 
   const handleUnselectingItem = (label: string) => {
@@ -51,13 +48,11 @@ export const Home = ({ store, setStore }: StateMutate) => {
 
   const handleStartRecording = async () => {
     setIsRecording(true)
-    const title = 'Pink ponies and apple sauce'
-    await handleGenerateAndSaveStory(title)
-      .then(async (result) => await handleAddStoryToStore(result, title))
-      .catch((generateError) => console.log({ generateError }))
-      .finally(() => {
-        setIsRecording(false)
-      })
+    try {
+      await Voice.start('en-us')
+    } catch (error: any) {
+      console.log({ error })
+    }
   }
 
   const handleAddStoryToStore = async (path: string, title: string) => {
@@ -65,6 +60,26 @@ export const Home = ({ store, setStore }: StateMutate) => {
     setTimeout(() => {
       playStory(path)
     }, 1000)
+  }
+
+  const [isRecording, setIsRecording] = useState(false)
+
+  Voice.onSpeechStart = () => setIsRecording(true)
+  Voice.onSpeechEnd = () => {
+    setIsRecording(false)
+  }
+
+  Voice.onSpeechResults = async (res: SpeechResultsEvent) => {
+    setIsRecording(false)
+    const title: string = res.value
+      ? res.value?.reduce<string>(
+          (acc, curr) => (curr ? `${acc} ${curr}` : acc),
+          ''
+        )
+      : ''
+    await handleGenerateAndSaveStory(title.trim())
+      .then(async (result) => await handleAddStoryToStore(result, title.trim()))
+      .catch((generateError) => console.log({ generateError }))
   }
 
   return (
@@ -78,7 +93,7 @@ export const Home = ({ store, setStore }: StateMutate) => {
         <RecordButton
           setIsRecording={() => handleStartRecording()}
           isRecording={isRecording}
-          showIndicator={isFetching}
+          showIndicator={isRecording}
         />
         <Typography text="Tell me a children's story about..." />
         <View style={styles.circularButtonRowContainer}>
