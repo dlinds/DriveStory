@@ -11,9 +11,9 @@ import { AppContainer } from '../../app_container/screens/app_container'
 import { appColors } from '../../assets/app_colors'
 import { Typography } from '../../_atoms/typography'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { SavedStory, StoryCollection } from '../../../../AppStorageUtils'
 import { SavedItem } from '../atoms/saved_item'
 import { playStory } from '../../../../AppAPIUtils'
+import { AddToCollectionPopup } from '../molecules/add_to_collection_popup'
 
 export const Saved = ({ store, setStore }: StateMutate) => {
   // const currentCollection: StoryCollection | undefined = store.collections
@@ -35,14 +35,25 @@ export const Saved = ({ store, setStore }: StateMutate) => {
   const [isDropdownOpen, setIsDropDownOpen] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
 
-  const popupContent = (
-    <View style={{ height: 100, width: 100, backgroundColor: 'pink' }} />
+  const [currentAddToPopupStory, setCurrentAddToPopupStory] =
+    useState<string>('')
+
+  const handleAddToCollection = (storyTitle: string) => {
+    setShowPopup(true)
+    setCurrentAddToPopupStory(storyTitle)
+  }
+
+  const addToCollectionPopup = (
+    <AddToCollectionPopup
+      storyTitle={currentAddToPopupStory}
+      collections={store.collections}
+    />
   )
 
   return (
     <AppContainer
       showPopup={showPopup}
-      popupContent={popupContent}
+      popupContent={addToCollectionPopup}
       setShowPopup={setShowPopup}
       navigate={(screen: Screens) => handleNavigate(store, setStore, screen)}
     >
@@ -95,7 +106,7 @@ export const Saved = ({ store, setStore }: StateMutate) => {
                 id={item.storyId}
                 label={item.title}
                 playPauseItem={() => playStory(item.audioFilePaths[0].filePath)}
-                addToCollection={() => setShowPopup(true)}
+                addToCollection={() => handleAddToCollection(item.title)}
                 deleteItem={() => removeStoryFromStore(store, setStore, item)}
               />
             ))}

@@ -9,6 +9,7 @@ export interface TypographyProps {
   readonly text: string
   readonly variant?: TypographyVariants
   readonly textColor?: string
+  readonly uppercase?: boolean
 }
 
 const getTextStyle = (variant: TypographyVariants) => {
@@ -28,11 +29,12 @@ export const Typography = ({
   variant = 'body',
   text,
   textColor,
+  uppercase,
 }: TypographyProps) => {
   const color = textColor ? { color: textColor } : {}
   return (
     <Text style={{ ...getTextStyle(variant), ...color }}>
-      {variant.includes('heading') ? text.toUpperCase() : text}
+      {variant.includes('heading') && !uppercase ? text.toUpperCase() : text}
     </Text>
   )
 }
