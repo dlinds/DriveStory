@@ -20,12 +20,14 @@ const handleTextToSpeech = async (input: string): Promise<string> => {
       text: input,
     },
     voice: {
-      languageCode: 'en-gb',
-      name: 'en-GB-Neural2-F',
-      ssmlGender: 'FEMALE',
+      languageCode: 'en-US',
+      name: 'en-US-Neural2-C',
     },
     audioConfig: {
       audioEncoding: 'MP3',
+      effectsProfileId: ['small-bluetooth-speaker-class-device'],
+      pitch: 0,
+      speakingRate: 1,
     },
   })
 
@@ -49,22 +51,7 @@ const handleTextToSpeech = async (input: string): Promise<string> => {
   return path
 }
 
-export const playStory = (path: string) => {
-  const speech = new Sound(path, '', (error) => {
-    if (error) {
-      console.warn('failed to load the sound', error)
-
-      return null
-    }
-    speech.play((success) => {
-      if (!success) {
-        console.warn('playback failed due to audio decoding errors')
-      }
-    })
-
-    return null
-  })
-}
+export const playStory = (path: string) => {}
 
 interface queryOpenAiProps {
   readonly prompt: string
@@ -94,7 +81,7 @@ export const queryOpenAi = async ({
   try {
     const resp = await openAiConfig.createCompletion({
       model,
-      prompt: `Tell me a five sentence childrens story that includes the topics: ${prompt}`,
+      prompt: `Tell me a childrens story that includes the topics: ${prompt}`,
       max_tokens,
       temperature,
     })

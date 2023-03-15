@@ -4,16 +4,21 @@ import { Typography } from '../../_atoms/typography'
 import { scale } from '../../../common/utilities'
 import { appColors } from '../../assets/app_colors'
 import { StoryCollection } from '../../../../AppStorageUtils'
+import { TextOrNumInput } from '../../_atoms/text_input'
 
 export interface AddToCollectionPopupProps {
   readonly storyTitle: string
   readonly collections?: StoryCollection[]
+  readonly addToCollection: (collection: StoryCollection) => void
 }
 
 export const AddToCollectionPopup = ({
   storyTitle,
   collections,
+  addToCollection,
 }: AddToCollectionPopupProps) => {
+  const handleAddToCollection = () => {}
+
   return (
     <View style={styles.container}>
       <View style={styles.headingContainer}>
@@ -24,6 +29,7 @@ export const AddToCollectionPopup = ({
           <TouchableOpacity>
             <Typography text="New" variant="heading" />
           </TouchableOpacity>
+          <TextOrNumInput setValue={() => console.log('')} />
           {collections?.map((i) => (
             <TouchableOpacity>
               <Typography text={i.title} />

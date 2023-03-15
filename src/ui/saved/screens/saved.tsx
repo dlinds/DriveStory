@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import {
   handleNavigate,
   removeStoryFromStore,
   Screens,
+  setCurrentSound,
   StateMutate,
 } from '../../../../AppStateMutate'
 import { scale } from '../../../common/utilities'
@@ -14,6 +15,7 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import { SavedItem } from '../atoms/saved_item'
 import { playStory } from '../../../../AppAPIUtils'
 import { AddToCollectionPopup } from '../molecules/add_to_collection_popup'
+import { SavedStory, StoryCollection } from '../../../../AppStorageUtils'
 
 export const Saved = ({ store, setStore }: StateMutate) => {
   // const currentCollection: StoryCollection | undefined = store.collections
@@ -36,19 +38,59 @@ export const Saved = ({ store, setStore }: StateMutate) => {
   const [showPopup, setShowPopup] = useState(false)
 
   const [currentAddToPopupStory, setCurrentAddToPopupStory] =
-    useState<string>('')
+    useState<SavedStory>()
 
-  const handleAddToCollection = (storyTitle: string) => {
+  const handleShowCollectionPopup = (story: SavedStory) => {
     setShowPopup(true)
-    setCurrentAddToPopupStory(storyTitle)
+    setCurrentAddToPopupStory(story)
+  }
+
+  const handleAddToCollection = (
+    collection: StoryCollection,
+    story?: SavedStory
+  ) => {
+    if (story) {
+      store.collections
+    }
   }
 
   const addToCollectionPopup = (
     <AddToCollectionPopup
-      storyTitle={currentAddToPopupStory}
+      storyTitle={currentAddToPopupStory?.title || ''}
       collections={store.collections}
+      addToCollection={(collection: StoryCollection) =>
+        handleAddToCollection(collection, currentAddToPopupStory)
+      }
     />
   )
+  const [currentAudioPath, setCurrentAudioPath] = useState<string>()
+
+  const handleSetCurrentSound = (path: string) => {
+    if (currentAudioPath === path) {
+      setCurrentAudioPath('')
+      setCurrentSound(store, setStore, undefined)
+    } else {
+      setCurrentAudioPath(path)
+      setCurrentSound(store, setStore, path)
+    }
+  }
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!!store.currentSoundPlayer) {
+        if (store.currentSoundPlayer.isPlaying()) {
+          store.currentSoundPlayer.stop()
+          setCurrentAudioPath('')
+          setCurrentSound(store, setStore, undefined)
+        } else {
+          store.currentSoundPlayer.play(() => {
+            setCurrentAudioPath('')
+            setCurrentSound(store, setStore, undefined)
+          })
+        }
+      }
+    }, 100)
+  }, [store.currentSoundPlayer])
 
   return (
     <AppContainer
@@ -105,8 +147,15 @@ export const Saved = ({ store, setStore }: StateMutate) => {
                 key={item.storyId}
                 id={item.storyId}
                 label={item.title}
-                playPauseItem={() => playStory(item.audioFilePaths[0].filePath)}
-                addToCollection={() => handleAddToCollection(item.title)}
+                setAudioPath={() =>
+                  handleSetCurrentSound(item.audioFilePaths[0].filePath)
+                }
+                isSavedItemPlaying={
+                  currentAudioPath === item.audioFilePaths[0].filePath
+                }
+                // playPauseItem={() =>   ()}
+                // audioFilePath={item.audioFilePaths[0].filePath}
+                addToCollection={() => handleShowCollectionPopup(item)}
                 deleteItem={() => removeStoryFromStore(store, setStore, item)}
               />
             ))}

@@ -7,6 +7,8 @@ import {
 import { CustomizeOption } from './src/ui/Home/molecules/customize_story_popup'
 import 'react-native-get-random-values'
 import { v4 as uuidv4 } from 'uuid'
+import Sound from 'react-native-sound'
+Sound.setCategory('Playback')
 
 export type Screens = 'start' | 'home' | 'saved'
 
@@ -27,6 +29,7 @@ export const initialState: Store = {
     },
   ],
   currentScreen: 'start',
+  currentSoundPlayer: undefined,
 }
 
 export interface Store {
@@ -36,11 +39,33 @@ export interface Store {
   readonly currentScreen: Screens
   readonly savedStories?: SavedStory[]
   readonly collections?: StoryCollection[]
+  readonly currentSoundPath?: string
+  readonly currentSoundPlayer?: Sound
 }
 
 export interface StateMutate {
   readonly store: Store
   readonly setStore: (store: Store) => void
+}
+
+export const setCurrentSound = (
+  store: Store,
+  setStore: (store: Store) => void,
+  mp3Path: string | undefined
+) => {
+  if (store.currentSoundPlayer) {
+    store.currentSoundPlayer.stop()
+  }
+  const updatedStore: Store = {
+    ...store,
+    currentSoundPath: mp3Path,
+    currentSoundPlayer: mp3Path
+      ? new Sound(mp3Path, Sound.MAIN_BUNDLE, () => {})
+      : undefined,
+  }
+
+  setStore({ ...updatedStore })
+  handleSaveStoreToFS(updatedStore)
 }
 
 export const setInitialStore = (

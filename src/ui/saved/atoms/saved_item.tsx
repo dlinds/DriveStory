@@ -1,27 +1,32 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { scale } from '../../../common/utilities'
 import { appColors } from '../../assets/app_colors'
 import { Typography } from '../../_atoms/typography'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Sound from 'react-native-sound'
 
 export interface SavedItemProps {
   readonly label: string
   readonly id: string
-  readonly isPlaying?: boolean
-  readonly playPauseItem: () => void
+  // readonly playPauseItem: () => void
+  readonly setAudioPath: () => void
+  readonly isSavedItemPlaying: boolean
   readonly addToCollection: () => void
   readonly deleteItem: () => void
 }
+Sound.setCategory('Playback')
 
 export const SavedItem = ({
   label,
   id,
-  isPlaying = false,
-  playPauseItem,
+  isSavedItemPlaying,
+  setAudioPath,
   addToCollection,
   deleteItem,
 }: SavedItemProps) => {
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false)
+
   return (
     <View style={styles.listItem}>
       <View style={styles.titleContainer}>
@@ -38,11 +43,11 @@ export const SavedItem = ({
             color={appColors.offWhite}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={playPauseItem} hitSlop={styles.iconHitslop}>
+        <TouchableOpacity onPress={setAudioPath} hitSlop={styles.iconHitslop}>
           <MaterialCommunityIcon
-            name={!isPlaying ? 'play' : 'stop'}
+            name={!isSavedItemPlaying ? 'play' : 'stop'}
             size={scale(3)}
-            color={!isPlaying ? appColors.offWhite : appColors.softRed}
+            color={!isSavedItemPlaying ? appColors.offWhite : appColors.softRed}
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={deleteItem} hitSlop={styles.iconHitslop}>

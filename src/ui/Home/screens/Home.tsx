@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { scale } from '../../../common/utilities'
 import { AppContainer } from '../../app_container/screens/app_container'
@@ -12,6 +12,7 @@ import {
   addStoryToStore,
   handleNavigate,
   Screens,
+  setCurrentSound,
   setCustomizedText,
   setSelectedCustomized,
   StateMutate,
@@ -61,10 +62,16 @@ export const Home = ({ store, setStore }: StateMutate) => {
 
   const handleAddStoryToStore = async (path: string, title: string) => {
     await addStoryToStore(store, setStore, title, [path])
-    setTimeout(() => {
-      playStory(path)
-    }, 1000)
   }
+
+  useEffect(() => {
+    setTimeout(() => {
+      console.log({ hc: store.currentSoundPlayer })
+      store.currentSoundPlayer?.play(() => {
+        setCurrentSound(store, setStore, undefined)
+      })
+    }, 100)
+  }, [store.currentSoundPlayer])
 
   const [isRecording, setIsRecording] = useState(false)
 
@@ -80,12 +87,12 @@ export const Home = ({ store, setStore }: StateMutate) => {
     if (storyResult) {
       setTimeout(async () => {
         await handleCallGoogle(storyResult, prompt)
-      }, 1000)
+      }, 100)
     }
   }
 
   const handleCallGoogle = async (storyResult: string, title: string) => {
-    await handleGenerateAndSaveStory(storyResult || '')
+    await handleGenerateAndSaveStory(storyResult)
       .then(async (result) => await handleAddStoryToStore(result, title))
       .catch((generateError) => console.log({ generateError }))
   }

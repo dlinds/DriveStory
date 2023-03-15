@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView, ScrollView, StatusBar } from 'react-native'
+import Sound from 'react-native-sound'
 import { initialState, Store } from './AppStateMutate'
 import { handleGetStoreFromState } from './AppStorageUtils'
 import { appColors } from './src/ui/assets/app_colors'
@@ -12,7 +13,9 @@ const App = (): JSX.Element => {
 
   useEffect(() => {
     const storeFromLocalStore = async () => {
-      await handleGetStoreFromState().then((res) => setStore(res))
+      await handleGetStoreFromState().then((res) =>
+        setStore({ ...res, currentSoundPlayer: undefined })
+      )
     }
     storeFromLocalStore()
   }, [])
