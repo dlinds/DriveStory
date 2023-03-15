@@ -4,7 +4,7 @@ import RNFS from 'react-native-fs'
 export interface StoryCollection {
   readonly id: string
   readonly title: string
-  readonly itemIds: string[]
+  readonly stories: SavedStory[]
 }
 
 export interface SavedStory {

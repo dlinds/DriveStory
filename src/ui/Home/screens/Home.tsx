@@ -20,7 +20,6 @@ import {
 import { CircularPlusButton } from '../atoms/circular_plus_button'
 import {
   handleGenerateAndSaveStory,
-  playStory,
   queryOpenAi,
 } from '../../../../AppAPIUtils'
 import Voice, { SpeechResultsEvent } from '@react-native-voice/voice'
@@ -66,8 +65,8 @@ export const Home = ({ store, setStore }: StateMutate) => {
 
   useEffect(() => {
     setTimeout(() => {
-      console.log({ hc: store.currentSoundPlayer })
       store.currentSoundPlayer?.play(() => {
+        console.log({ hc: store.currentSoundPlayer })
         setCurrentSound(store, setStore, undefined)
       })
     }, 100)

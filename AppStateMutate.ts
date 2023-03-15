@@ -120,9 +120,10 @@ export const addStoryToStore = async (
     audioFilePaths,
   }
 
-  const updatedStories = store.savedStories
-    ? [...store.savedStories, storyObject]
-    : [storyObject]
+  const updatedStories =
+    store.savedStories && store.savedStories?.length > 0
+      ? [...store.savedStories, storyObject]
+      : [storyObject]
   const updatedStore = { ...store, savedStories: [...updatedStories] }
   setStore(updatedStore)
   await handleSaveStoreToFS(updatedStore)
@@ -134,23 +135,36 @@ export const removeStoryFromStore = (
   story: SavedStory
 ) => {
   const newSavedItems = store.savedStories?.filter((i) => i !== story)
-  const removedFromCollectionsStore = removeStoryFromCollection(store, story)
+  const removedFromCollectionsStore = removeStoryFromAllCollections(
+    store,
+    story
+  )
   const updatedStore: Store = {
-    ...removedFromCollectionsStore,
+    ...store,
     savedStories: newSavedItems,
+    collections: removedFromCollectionsStore,
   }
   setStore({ ...updatedStore })
   handleSaveStoreToFS(updatedStore)
 }
 
-const removeStoryFromCollection = (store: Store, story: SavedStory): Store => {
-  const updatedCollections = store.collections?.filter(
-    (i) => !i.itemIds.includes(story.storyId)
-  )
-  return { ...store, collections: updatedCollections }
+const removeStoryFromAllCollections = (
+  store: Store,
+  story: SavedStory
+): StoryCollection[] => {
+  // const updatedCollections = store.collections?.filter(
+  //   (i) => !i.stories.includes(story)
+  // )
+  const updatedCollections = store.collections?.map((c) => {
+    const updatedCollection = c.stories.filter(
+      (s) => s.storyId !== story.storyId
+    )
+    return { ...c, stories: updatedCollection }
+  })
+  return [...(updatedCollections || [])]
 }
 
-export const removeCollectionFromStore = (
+export const removeCollectionFromStore = async (
   store: Store,
   setStore: (store: Store) => void,
   collection: StoryCollection
@@ -158,7 +172,66 @@ export const removeCollectionFromStore = (
   const newSavedCollections = store.collections?.filter((i) => i !== collection)
   const updatedStore: Store = { ...store, collections: newSavedCollections }
   setStore({ ...updatedStore })
-  handleSaveStoreToFS(updatedStore)
+  await handleSaveStoreToFS(updatedStore)
+}
+
+export const addNewCollectionToStore = async (
+  store: Store,
+  setStore: (store: Store) => void,
+  collectionTitle: string,
+  file: SavedStory
+) => {
+  const newCollection: StoryCollection = {
+    id: uuidv4(),
+    title: collectionTitle,
+    stories: [file],
+  }
+
+  const updatedCollections = store.collections
+    ? [...store.collections, newCollection]
+    : [newCollection]
+
+  const updatedStore = { ...store, collections: updatedCollections }
+  setStore(updatedStore)
+  await handleSaveStoreToFS(updatedStore)
+}
+
+export const addStoryToCollection = async (
+  store: Store,
+  setStore: (store: Store) => void,
+  collection: StoryCollection,
+  file: SavedStory
+) => {
+  const updatedCollections = store.collections?.map<StoryCollection>((c) =>
+    c.id === collection.id
+      ? { ...collection, stories: [...collection.stories, file] }
+      : { ...c }
+  )
+  const updatedStore = { ...store, collections: updatedCollections }
+  setStore(updatedStore)
+  console.log({ c: updatedStore.collections })
+  await handleSaveStoreToFS(updatedStore)
+}
+
+export const removeStoryToCollection = async (
+  store: Store,
+  setStore: (store: Store) => void,
+  collection: StoryCollection,
+  file: SavedStory
+) => {
+  const updatedCollections = store.collections?.map<StoryCollection>((c) =>
+    c.id === collection.id
+      ? {
+          ...collection,
+          stories: [
+            ...collection.stories.filter((s) => s.storyId !== file.storyId),
+          ],
+        }
+      : { ...c }
+  )
+  const updatedStore = { ...store, collections: updatedCollections }
+  setStore(updatedStore)
+  await handleSaveStoreToFS(updatedStore)
 }
 
 export const handleNavigate = (

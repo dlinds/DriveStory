@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import {
+  addNewCollectionToStore,
+  addStoryToCollection,
   handleNavigate,
   removeStoryFromStore,
+  removeStoryToCollection,
   Screens,
   setCurrentSound,
   StateMutate,
@@ -13,7 +16,6 @@ import { appColors } from '../../assets/app_colors'
 import { Typography } from '../../_atoms/typography'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { SavedItem } from '../atoms/saved_item'
-import { playStory } from '../../../../AppAPIUtils'
 import { AddToCollectionPopup } from '../molecules/add_to_collection_popup'
 import { SavedStory, StoryCollection } from '../../../../AppStorageUtils'
 
@@ -45,23 +47,37 @@ export const Saved = ({ store, setStore }: StateMutate) => {
     setCurrentAddToPopupStory(story)
   }
 
-  const handleAddToCollection = (
-    collection: StoryCollection,
-    story?: SavedStory
-  ) => {
-    if (story) {
-      store.collections
-    }
-  }
-
-  const addToCollectionPopup = (
+  const addToCollectionPopup = currentAddToPopupStory ? (
     <AddToCollectionPopup
-      storyTitle={currentAddToPopupStory?.title || ''}
+      story={currentAddToPopupStory}
       collections={store.collections}
       addToCollection={(collection: StoryCollection) =>
-        handleAddToCollection(collection, currentAddToPopupStory)
+        addStoryToCollection(
+          store,
+          setStore,
+          collection,
+          currentAddToPopupStory
+        )
+      }
+      removeFromCollection={(collection: StoryCollection) =>
+        removeStoryToCollection(
+          store,
+          setStore,
+          collection,
+          currentAddToPopupStory
+        )
+      }
+      createNewCollection={(newCollectionTitle: string) =>
+        addNewCollectionToStore(
+          store,
+          setStore,
+          newCollectionTitle,
+          currentAddToPopupStory
+        )
       }
     />
+  ) : (
+    <></>
   )
   const [currentAudioPath, setCurrentAudioPath] = useState<string>()
 

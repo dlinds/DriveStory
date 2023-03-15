@@ -51,8 +51,6 @@ const handleTextToSpeech = async (input: string): Promise<string> => {
   return path
 }
 
-export const playStory = (path: string) => {}
-
 interface queryOpenAiProps {
   readonly prompt: string
   readonly max_tokens?: number
@@ -71,13 +69,14 @@ const configuration = new Configuration({
 
 const openAiConfig = new OpenAIApi(configuration)
 
+// JSON children's story about goblins with narrator, two characters, 'voice' field (speaker), and 'text' field (dialogue).
+
 export const queryOpenAi = async ({
   prompt,
   max_tokens = 500,
   temperature = undefined,
   model = models.davinci3,
 }: queryOpenAiProps) => {
-  console.log({ prompt })
   try {
     const resp = await openAiConfig.createCompletion({
       model,
