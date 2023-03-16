@@ -55,11 +55,13 @@ export const AddToCollectionPopup = ({
               <TextOrNumInput
                 setValue={setNewCollectionValue}
                 value={newCollectionValue}
+                maxInput={15}
               />
               <View style={styles.cancelButtonContainer}>
                 <TouchableOpacity
                   disabled={newCollectionValue?.length === 0}
                   onPress={handleSubmitAddingNew}
+                  hitSlop={styles.hitSlop}
                 >
                   <MaterialCommunityIcon
                     name="check"
@@ -71,7 +73,10 @@ export const AddToCollectionPopup = ({
                     }
                   />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={handleCancelAddingNew}>
+                <TouchableOpacity
+                  onPress={handleCancelAddingNew}
+                  hitSlop={styles.hitSlop}
+                >
                   <MaterialCommunityIcon
                     name="close-circle-outline"
                     size={scale(3)}
@@ -141,5 +146,11 @@ const styles = StyleSheet.create({
     top: scale(1),
     flexDirection: 'row',
     columnGap: scale(1),
+  },
+  hitSlop: {
+    top: scale(2),
+    bottom: scale(2),
+    right: scale(2),
+    left: scale(2),
   },
 })

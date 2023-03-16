@@ -209,7 +209,6 @@ export const addStoryToCollection = async (
   )
   const updatedStore = { ...store, collections: updatedCollections }
   setStore(updatedStore)
-  console.log({ c: updatedStore.collections })
   await handleSaveStoreToFS(updatedStore)
 }
 

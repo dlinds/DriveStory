@@ -66,7 +66,6 @@ export const Home = ({ store, setStore }: StateMutate) => {
   useEffect(() => {
     setTimeout(() => {
       store.currentSoundPlayer?.play(() => {
-        console.log({ hc: store.currentSoundPlayer })
         setCurrentSound(store, setStore, undefined)
       })
     }, 100)

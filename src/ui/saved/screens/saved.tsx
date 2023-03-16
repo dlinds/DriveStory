@@ -20,21 +20,23 @@ import { AddToCollectionPopup } from '../molecules/add_to_collection_popup'
 import { SavedStory, StoryCollection } from '../../../../AppStorageUtils'
 
 export const Saved = ({ store, setStore }: StateMutate) => {
-  // const currentCollection: StoryCollection | undefined = store.collections
-  //   ? store.collections.filter((i) => i.id === '7h63i7a3i')[0]
-  //   : undefined
+  const [filteredCollection, setFilteredCollection] = useState<
+    StoryCollection | undefined
+  >()
 
-  // const itemsToDisplay = store.savedStories?.reduce<SavedStory[]>(
-  //   (acc, curr) =>
-  //     !!currentCollection && currentCollection.itemIds.includes(curr.storyId)
-  //       ? [...acc, curr]
-  //       : [...acc],
-  //   []
-  // )
+  const currentCollection: StoryCollection | undefined = store.collections
+    ? store.collections.filter((c) => c.id === filteredCollection?.id)[0]
+    : undefined
 
-  const collectionNames: string[] = store.collections
-    ? store.collections.map((i) => i.title)
-    : []
+  const filteredCollectionItems = store.savedStories?.reduce<SavedStory[]>(
+    (acc, curr) =>
+      currentCollection &&
+      currentCollection.stories.filter((s) => s.storyId === curr.storyId)
+        .length > 0
+        ? [...acc, curr]
+        : [...acc],
+    []
+  )
 
   const [isDropdownOpen, setIsDropDownOpen] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
@@ -124,57 +126,69 @@ export const Saved = ({ store, setStore }: StateMutate) => {
             <Typography variant="headingLarge" text="Previous stories" />
           </View>
           <View style={styles.collectionsDropdownContainer}>
-            {collectionNames && (
-              <>
-                <Typography text="Collections" variant="heading" />
-                <Pressable
-                  style={styles.collectionsDropdown}
-                  onPress={() => setIsDropDownOpen((prev) => !prev)}
-                >
-                  <Typography text="all" />
-                  <MaterialCommunityIcon
-                    name={'menu-down'}
-                    size={scale(2)}
-                    color={appColors.offWhite}
-                  />
-                </Pressable>
-                {isDropdownOpen && (
-                  <View style={styles.selectContainer}>
-                    {collectionNames.map((collection, i) => (
-                      <Pressable
-                        key={i}
-                        style={styles.collectionItem}
-                        onPress={() => console.log('test')}
-                      >
-                        <Typography
-                          text={collection}
-                          textColor={appColors.darkGray}
-                        />
-                      </Pressable>
-                    ))}
-                  </View>
-                )}
-              </>
-            )}
-          </View>
-          <View style={styles.listContainer}>
-            {store.savedStories?.map((item) => (
-              <SavedItem
-                key={item.storyId}
-                id={item.storyId}
-                label={item.title}
-                setAudioPath={() =>
-                  handleSetCurrentSound(item.audioFilePaths[0].filePath)
-                }
-                isSavedItemPlaying={
-                  currentAudioPath === item.audioFilePaths[0].filePath
-                }
-                // playPauseItem={() =>   ()}
-                // audioFilePath={item.audioFilePaths[0].filePath}
-                addToCollection={() => handleShowCollectionPopup(item)}
-                deleteItem={() => removeStoryFromStore(store, setStore, item)}
+            <Typography text="Collections" variant="heading" />
+            <Pressable
+              style={styles.collectionsDropdown}
+              onPress={() => setIsDropDownOpen((prev) => !prev)}
+            >
+              <Typography
+                text={filteredCollection ? filteredCollection.title : 'all'}
               />
-            ))}
+              <MaterialCommunityIcon
+                name={'menu-down'}
+                size={scale(2)}
+                color={appColors.offWhite}
+              />
+            </Pressable>
+          </View>
+          {store.collections && isDropdownOpen && (
+            <View style={styles.selectContainer}>
+              <Pressable
+                style={styles.collectionItem}
+                onPress={() => setFilteredCollection(undefined)}
+              >
+                <Typography text={'all'} />
+                {filteredCollection === undefined && (
+                  <View style={styles.selectedFilter}></View>
+                )}
+              </Pressable>
+              {store.collections.map((collection, i) => (
+                <Pressable
+                  key={i}
+                  style={styles.collectionItem}
+                  onPress={() => setFilteredCollection(collection)}
+                >
+                  <Typography text={collection.title} />
+                  {filteredCollection === collection && (
+                    <View style={styles.selectedFilter}></View>
+                  )}
+                </Pressable>
+              ))}
+            </View>
+          )}
+          <View style={styles.listContainer}>
+            {store.savedStories?.map((item) => {
+              return (
+                (filteredCollection === undefined ||
+                  filteredCollectionItems?.includes(item)) && (
+                  <SavedItem
+                    key={item.storyId}
+                    id={item.storyId}
+                    label={item.title}
+                    setAudioPath={() =>
+                      handleSetCurrentSound(item.audioFilePaths[0].filePath)
+                    }
+                    isSavedItemPlaying={
+                      currentAudioPath === item.audioFilePaths[0].filePath
+                    }
+                    addToCollection={() => handleShowCollectionPopup(item)}
+                    deleteItem={() =>
+                      removeStoryFromStore(store, setStore, item)
+                    }
+                  />
+                )
+              )
+            })}
           </View>
         </View>
       </Pressable>
@@ -190,23 +204,40 @@ const styles = StyleSheet.create({
     rowGap: scale(2),
   },
   selectContainer: {
-    backgroundColor: appColors.offWhite,
-    width: scale(15),
+    backgroundColor: appColors.altDarkGray,
+    borderColor: appColors.mediumGray,
+    borderWidth: 1,
+    width: scale(21),
     position: 'absolute',
-    right: scale(7.5),
-    top: scale(2),
+    right: scale(6),
+    top: scale(14),
     borderRadius: scale(0.5),
-    rowGap: scale(2),
     zIndex: 1000,
-    paddingVertical: scale(2),
+    paddingBottom: scale(2),
+    paddingTop: scale(1),
     paddingHorizontal: scale(1),
   },
   collectionItem: {
-    borderBottomColor: appColors.darkGray,
+    borderWidth: 1,
+    borderColor: appColors.transparent,
+    borderBottomColor: appColors.mediumGray,
     borderBottomWidth: 1,
     paddingBottom: scale(0.2),
-    justifyContent: 'center',
+    height: scale(4),
+    marginTop: scale(0.5),
+    justifyContent: 'space-between',
+    paddingRight: scale(1),
+    alignItems: 'flex-end',
     paddingStart: scale(0.5),
+    flexDirection: 'row',
+  },
+  selectedFilter: {
+    width: scale(1.5),
+    height: scale(1.5),
+    borderRadius: scale(1.5),
+    backgroundColor: appColors.primaryPurple,
+    marginBottom: scale(0.3),
+    alignSelf: 'flex-end',
   },
   headingContainer: {
     marginTop: scale(2),
@@ -218,6 +249,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     columnGap: scale(2),
     alignContent: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: '10%',
   },
@@ -226,7 +258,7 @@ const styles = StyleSheet.create({
     columnGap: scale(0.5),
     borderBottomColor: appColors.offWhite,
     borderBottomWidth: 1,
-    width: scale(10),
+    width: scale(20),
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     marginBottom: scale(0.5),

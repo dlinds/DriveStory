@@ -21,6 +21,7 @@ export interface TextOrNumInputProps {
   readonly multiline?: boolean
   readonly onPressIn?: () => void
   readonly disabled?: boolean
+  readonly maxInput?: number
 }
 
 export const TextOrNumInput = ({
@@ -33,13 +34,8 @@ export const TextOrNumInput = ({
   multiline = false,
   onPressIn,
   disabled,
+  maxInput,
 }: TextOrNumInputProps) => {
-  // const [localValue, setLocalValue] = useState(value)
-
-  // useEffect(() => {
-  //   setValue(localValue)
-  // }, [localValue])
-
   const textInputStyle = {
     ...styles.textInput,
     ...styles.text,
@@ -72,6 +68,7 @@ export const TextOrNumInput = ({
       {placeholderComponent}
       <TextInput
         style={textInputStyle}
+        maxLength={maxInput}
         onChangeText={setValue}
         keyboardType={keyboardType}
         secureTextEntry={secureTextEntry}
