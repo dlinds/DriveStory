@@ -12,7 +12,6 @@ import {
   addStoryToStore,
   handleNavigate,
   Screens,
-  setCurrentSound,
   setCustomizedText,
   setSelectedCustomized,
   StateMutate,
@@ -23,6 +22,9 @@ import {
   queryOpenAi,
 } from '../../../../AppAPIUtils'
 import Voice, { SpeechResultsEvent } from '@react-native-voice/voice'
+import TrackPlayer, { Track } from 'react-native-track-player'
+import { addTracks } from '../../../../trackPlayerServices'
+import { usePlaybackState, State } from 'react-native-track-player'
 
 export const Home = ({ store, setStore }: StateMutate) => {
   const [popup, showPopup] = useState(false)
@@ -49,8 +51,22 @@ export const Home = ({ store, setStore }: StateMutate) => {
       currentCustomText={store.customText}
     />
   )
+  const [currentAction, setCurrentAction] = useState<string>()
+  const [isRecording, setIsRecording] = useState(false)
+  const [currentPrompt, setCurrentPrompt] = useState<string>()
+
+  const playerState = usePlaybackState()
+  const isPlaying = playerState === State.Playing
+
+  const handleResetControls = async () => {
+    setIsRecording(false)
+    await TrackPlayer.reset()
+    setCurrentPrompt(undefined)
+  }
 
   const handleStartRecording = async () => {
+    handleResetControls()
+    setCurrentAction('listening...')
     setIsRecording(true)
     try {
       await Voice.start('en-us')
@@ -59,40 +75,45 @@ export const Home = ({ store, setStore }: StateMutate) => {
     }
   }
 
-  const handleAddStoryToStore = async (path: string, title: string) => {
-    await addStoryToStore(store, setStore, title, [path])
-  }
-
-  useEffect(() => {
-    setTimeout(() => {
-      store.currentSoundPlayer?.play(() => {
-        setCurrentSound(store, setStore, undefined)
-      })
-    }, 100)
-  }, [store.currentSoundPlayer])
-
-  const [isRecording, setIsRecording] = useState(false)
-
   Voice.onSpeechStart = () => setIsRecording(true)
   Voice.onSpeechEnd = () => {
     setIsRecording(false)
+    setCurrentAction('done listening...')
   }
 
   Voice.onSpeechResults = async (res: SpeechResultsEvent) => {
     setIsRecording(false)
     const prompt: string = res.value ? res.value[0] : ''
+    setCurrentPrompt(prompt)
+    handleCallOpenAI(prompt)
+  }
+
+  const handleCallOpenAI = async (prompt: string) => {
+    setIsRecording(false)
+    setCurrentAction('writing a story')
     const storyResult = (await queryOpenAi({ prompt })).data.choices[0].text
     if (storyResult) {
-      setTimeout(async () => {
-        await handleCallGoogle(storyResult, prompt)
-      }, 100)
+      await handleCallGoogle(storyResult, prompt)
     }
   }
 
   const handleCallGoogle = async (storyResult: string, title: string) => {
+    setIsRecording(false)
+    setCurrentAction('synthesizing the story')
     await handleGenerateAndSaveStory(storyResult)
-      .then(async (result) => await handleAddStoryToStore(result, title))
+      .then(async (path) => {
+        const newStoryId = addStoryToStore(store, setStore, title, [path])
+        const newTrack: Track = {
+          id: newStoryId,
+          url: path,
+          title,
+        }
+        await addTracks(newTrack)
+        TrackPlayer.play()
+        setCurrentAction('')
+      })
       .catch((generateError) => console.log({ generateError }))
+    setCurrentPrompt('')
   }
 
   return (
@@ -105,10 +126,13 @@ export const Home = ({ store, setStore }: StateMutate) => {
       <View style={styles.container}>
         <RecordButton
           setIsRecording={() => handleStartRecording()}
-          isRecording={isRecording}
-          showIndicator={isRecording}
+          isRecording={isRecording && !isPlaying}
+          showIndicator={isRecording && !isPlaying}
         />
         <Typography text="Tell me a children's story about..." />
+        {currentPrompt && <Typography text={`[ ${currentPrompt} ]`} />}
+        {currentAction && <Typography text={currentAction} />}
+        {isPlaying && <Typography text="Currently playing story" />}
         <View style={styles.circularButtonRowContainer}>
           {store.selectedCustomizedOptions?.map((option) => (
             <CircularPlusButton

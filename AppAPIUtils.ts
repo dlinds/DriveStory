@@ -20,8 +20,8 @@ const handleTextToSpeech = async (input: string): Promise<string> => {
       text: input,
     },
     voice: {
-      languageCode: 'en-US',
-      name: 'en-US-Neural2-C',
+      languageCode: 'en-GB',
+      name: 'en-GB-News-J',
     },
     audioConfig: {
       audioEncoding: 'MP3',

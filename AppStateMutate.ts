@@ -7,8 +7,6 @@ import {
 import { CustomizeOption } from './src/ui/Home/molecules/customize_story_popup'
 import 'react-native-get-random-values'
 import { v4 as uuidv4 } from 'uuid'
-import Sound from 'react-native-sound'
-Sound.setCategory('Playback')
 
 export type Screens = 'start' | 'home' | 'saved'
 
@@ -29,7 +27,6 @@ export const initialState: Store = {
     },
   ],
   currentScreen: 'start',
-  currentSoundPlayer: undefined,
 }
 
 export interface Store {
@@ -40,7 +37,7 @@ export interface Store {
   readonly savedStories?: SavedStory[]
   readonly collections?: StoryCollection[]
   readonly currentSoundPath?: string
-  readonly currentSoundPlayer?: Sound
+  readonly isTrackPlayerReady?: boolean
 }
 
 export interface StateMutate {
@@ -48,30 +45,11 @@ export interface StateMutate {
   readonly setStore: (store: Store) => void
 }
 
-export const setCurrentSound = (
-  store: Store,
-  setStore: (store: Store) => void,
-  mp3Path: string | undefined
-) => {
-  if (store.currentSoundPlayer) {
-    store.currentSoundPlayer.stop()
-  }
-  const updatedStore: Store = {
-    ...store,
-    currentSoundPath: mp3Path,
-    currentSoundPlayer: mp3Path
-      ? new Sound(mp3Path, Sound.MAIN_BUNDLE, () => {})
-      : undefined,
-  }
-
-  setStore({ ...updatedStore })
-  handleSaveStoreToFS(updatedStore)
-}
-
 export const setInitialStore = (
   store: Store,
   setStore: (store: Store) => void
 ) => {
+  console.log('setInitialStore')
   setStore({ ...store })
 }
 
@@ -80,6 +58,8 @@ export const setSelectedCustomized = (
   setStore: (store: Store) => void,
   options: CustomizeOption[]
 ) => {
+  console.log('setSelectedCustomized')
+
   const customText =
     options.filter((i) => i.customAnswer === true).length >= 1
       ? store.customText
@@ -98,35 +78,40 @@ export const setCustomizedText = (
   setStore: (store: Store) => void,
   customText: string
 ) => {
+  console.log('setCustomizedText')
   const updatedStore = { ...store, customText }
   setStore({ ...updatedStore })
   handleSaveStoreToFS(updatedStore)
 }
 
-export const addStoryToStore = async (
+export const addStoryToStore = (
   store: Store,
   setStore: (store: Store) => void,
   title: string,
   filePaths: string[]
-) => {
+): string => {
+  console.log('addStoryToStore: ' + title)
+  const audioFileId = uuidv4()
   const audioFilePaths: AudioFile[] = filePaths.map((path, index) => ({
-    fileId: uuidv4(),
+    fileId: audioFileId,
     filePath: path,
     storyIndex: index,
   }))
+
+  const storyId = uuidv4()
   const storyObject: SavedStory = {
-    storyId: uuidv4(),
+    storyId: storyId,
     title,
     audioFilePaths,
   }
-
   const updatedStories =
     store.savedStories && store.savedStories?.length > 0
       ? [...store.savedStories, storyObject]
       : [storyObject]
   const updatedStore = { ...store, savedStories: [...updatedStories] }
-  setStore(updatedStore)
-  await handleSaveStoreToFS(updatedStore)
+  handleSaveStoreToFS(updatedStore)
+  setStore({ ...updatedStore })
+  return storyId
 }
 
 export const removeStoryFromStore = (
@@ -134,6 +119,8 @@ export const removeStoryFromStore = (
   setStore: (store: Store) => void,
   story: SavedStory
 ) => {
+  console.log('removeStoryFromStore')
+
   const newSavedItems = store.savedStories?.filter((i) => i !== story)
   const removedFromCollectionsStore = removeStoryFromAllCollections(
     store,
@@ -152,9 +139,7 @@ const removeStoryFromAllCollections = (
   store: Store,
   story: SavedStory
 ): StoryCollection[] => {
-  // const updatedCollections = store.collections?.filter(
-  //   (i) => !i.stories.includes(story)
-  // )
+  console.log('removeStoryFromAllCollections')
   const updatedCollections = store.collections?.map((c) => {
     const updatedCollection = c.stories.filter(
       (s) => s.storyId !== story.storyId
@@ -164,23 +149,25 @@ const removeStoryFromAllCollections = (
   return [...(updatedCollections || [])]
 }
 
-export const removeCollectionFromStore = async (
+export const removeCollectionFromStore = (
   store: Store,
   setStore: (store: Store) => void,
   collection: StoryCollection
 ) => {
+  console.log('removeCollectionFromStore')
   const newSavedCollections = store.collections?.filter((i) => i !== collection)
   const updatedStore: Store = { ...store, collections: newSavedCollections }
   setStore({ ...updatedStore })
-  await handleSaveStoreToFS(updatedStore)
+  handleSaveStoreToFS(updatedStore)
 }
 
-export const addNewCollectionToStore = async (
+export const addNewCollectionToStore = (
   store: Store,
   setStore: (store: Store) => void,
   collectionTitle: string,
   file: SavedStory
 ) => {
+  console.log('addNewCollectionToStore')
   const newCollection: StoryCollection = {
     id: uuidv4(),
     title: collectionTitle,
@@ -193,15 +180,16 @@ export const addNewCollectionToStore = async (
 
   const updatedStore = { ...store, collections: updatedCollections }
   setStore(updatedStore)
-  await handleSaveStoreToFS(updatedStore)
+  handleSaveStoreToFS(updatedStore)
 }
 
-export const addStoryToCollection = async (
+export const addStoryToCollection = (
   store: Store,
   setStore: (store: Store) => void,
   collection: StoryCollection,
   file: SavedStory
 ) => {
+  console.log('addStoryToCollection')
   const updatedCollections = store.collections?.map<StoryCollection>((c) =>
     c.id === collection.id
       ? { ...collection, stories: [...collection.stories, file] }
@@ -209,15 +197,17 @@ export const addStoryToCollection = async (
   )
   const updatedStore = { ...store, collections: updatedCollections }
   setStore(updatedStore)
-  await handleSaveStoreToFS(updatedStore)
+  handleSaveStoreToFS(updatedStore)
 }
 
-export const removeStoryToCollection = async (
+export const removeStoryToCollection = (
   store: Store,
   setStore: (store: Store) => void,
   collection: StoryCollection,
   file: SavedStory
 ) => {
+  console.log('removeStoryToCollection')
+
   const updatedCollections = store.collections?.map<StoryCollection>((c) =>
     c.id === collection.id
       ? {
@@ -230,7 +220,7 @@ export const removeStoryToCollection = async (
   )
   const updatedStore = { ...store, collections: updatedCollections }
   setStore(updatedStore)
-  await handleSaveStoreToFS(updatedStore)
+  handleSaveStoreToFS(updatedStore)
 }
 
 export const handleNavigate = (
@@ -238,7 +228,7 @@ export const handleNavigate = (
   setStore: (store: Store) => void,
   screen: Screens
 ) => {
+  console.log('handleNavigate')
   const updatedStore = { ...store, currentScreen: screen }
   setStore({ ...updatedStore })
-  handleSaveStoreToFS(updatedStore)
 }

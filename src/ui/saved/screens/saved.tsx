@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Pressable, StyleSheet, View } from 'react-native'
+import {
+  Dimensions,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native'
 import {
   addNewCollectionToStore,
   addStoryToCollection,
@@ -7,7 +13,6 @@ import {
   removeStoryFromStore,
   removeStoryToCollection,
   Screens,
-  setCurrentSound,
   StateMutate,
 } from '../../../../AppStateMutate'
 import { scale } from '../../../common/utilities'
@@ -18,6 +23,8 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import { SavedItem } from '../atoms/saved_item'
 import { AddToCollectionPopup } from '../molecules/add_to_collection_popup'
 import { SavedStory, StoryCollection } from '../../../../AppStorageUtils'
+import TrackPlayer, { State, Track } from 'react-native-track-player'
+import { addTracks } from '../../../../trackPlayerServices'
 
 export const Saved = ({ store, setStore }: StateMutate) => {
   const [filteredCollection, setFilteredCollection] = useState<
@@ -81,34 +88,34 @@ export const Saved = ({ store, setStore }: StateMutate) => {
   ) : (
     <></>
   )
-  const [currentAudioPath, setCurrentAudioPath] = useState<string>()
+  const [currentTrack, setCurrentTrack] = useState<Track>()
 
-  const handleSetCurrentSound = (path: string) => {
-    if (currentAudioPath === path) {
-      setCurrentAudioPath('')
-      setCurrentSound(store, setStore, undefined)
-    } else {
-      setCurrentAudioPath(path)
-      setCurrentSound(store, setStore, path)
-    }
+  const getInitialCurrentTrack = async () => {
+    TrackPlayer.getQueue()
+      .then((res) => setCurrentTrack(res[0]))
+      .catch((e) => console.log({ e }))
   }
 
   useEffect(() => {
-    setTimeout(() => {
-      if (!!store.currentSoundPlayer) {
-        if (store.currentSoundPlayer.isPlaying()) {
-          store.currentSoundPlayer.stop()
-          setCurrentAudioPath('')
-          setCurrentSound(store, setStore, undefined)
-        } else {
-          store.currentSoundPlayer.play(() => {
-            setCurrentAudioPath('')
-            setCurrentSound(store, setStore, undefined)
-          })
-        }
-      }
-    }, 100)
-  }, [store.currentSoundPlayer])
+    getInitialCurrentTrack()
+  }, [])
+
+  const handleStartAudio = async (item: SavedStory) => {
+    await TrackPlayer.reset()
+    const newCurrentTrack: Track = {
+      id: item.storyId,
+      url: item.audioFilePaths[0].filePath,
+      title: item.title,
+    }
+    await addTracks(newCurrentTrack)
+    setCurrentTrack(newCurrentTrack)
+    TrackPlayer.play()
+  }
+
+  const handleStopAudio = () => {
+    TrackPlayer.reset()
+    setCurrentTrack(undefined)
+  }
 
   return (
     <AppContainer
@@ -141,6 +148,7 @@ export const Saved = ({ store, setStore }: StateMutate) => {
               />
             </Pressable>
           </View>
+
           {store.collections && isDropdownOpen && (
             <View style={styles.selectContainer}>
               <Pressable
@@ -166,30 +174,39 @@ export const Saved = ({ store, setStore }: StateMutate) => {
               ))}
             </View>
           )}
-          <View style={styles.listContainer}>
-            {store.savedStories?.map((item) => {
-              return (
-                (filteredCollection === undefined ||
-                  filteredCollectionItems?.includes(item)) && (
-                  <SavedItem
-                    key={item.storyId}
-                    id={item.storyId}
-                    label={item.title}
-                    setAudioPath={() =>
-                      handleSetCurrentSound(item.audioFilePaths[0].filePath)
-                    }
-                    isSavedItemPlaying={
-                      currentAudioPath === item.audioFilePaths[0].filePath
-                    }
-                    addToCollection={() => handleShowCollectionPopup(item)}
-                    deleteItem={() =>
-                      removeStoryFromStore(store, setStore, item)
-                    }
-                  />
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{ height: Dimensions.get('screen').height - scale(40) }}
+          >
+            <View
+              style={styles.listContainer}
+              onStartShouldSetResponder={() => true}
+            >
+              {store.savedStories?.map((item) => {
+                return (
+                  (filteredCollection === undefined ||
+                    filteredCollectionItems?.includes(item)) && (
+                    <SavedItem
+                      key={item.storyId}
+                      id={item.storyId}
+                      label={item.title}
+                      setAudioPath={
+                        currentTrack === undefined ||
+                        currentTrack?.id !== item.storyId
+                          ? () => handleStartAudio(item)
+                          : () => handleStopAudio()
+                      }
+                      isSavedItemPlaying={currentTrack?.id === item.storyId}
+                      addToCollection={() => handleShowCollectionPopup(item)}
+                      deleteItem={() =>
+                        removeStoryFromStore(store, setStore, item)
+                      }
+                    />
+                  )
                 )
-              )
-            })}
-          </View>
+              })}
+            </View>
+          </ScrollView>
         </View>
       </Pressable>
     </AppContainer>

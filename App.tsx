@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView, ScrollView, StatusBar } from 'react-native'
-import Sound from 'react-native-sound'
 import { initialState, Store } from './AppStateMutate'
 import { handleGetStoreFromState } from './AppStorageUtils'
 import { appColors } from './src/ui/assets/app_colors'
 import { Home } from './src/ui/Home/screens/home'
 import { Saved } from './src/ui/saved/screens/saved'
 import { Start } from './src/ui/start/screens/start'
+import { setupPlayer } from './trackPlayerServices'
 
 const App = (): JSX.Element => {
   const [store, setStore] = useState<Store>(initialState)
 
   useEffect(() => {
     const storeFromLocalStore = async () => {
+      await setupPlayer()
       await handleGetStoreFromState().then((res) =>
-        setStore({ ...res, currentSoundPlayer: undefined })
+        setStore({
+          ...res,
+        })
       )
     }
     storeFromLocalStore()
@@ -22,6 +25,10 @@ const App = (): JSX.Element => {
 
   const getCurrentScreen = () => {
     const state = { store: store, setStore: setStore }
+
+    useEffect(() => {
+      console.log('store was updated')
+    }, [store])
 
     switch (store.currentScreen) {
       case 'home':

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { scale } from '../../../common/utilities'
 import { appColors } from '../../assets/app_colors'
@@ -9,7 +9,6 @@ import Sound from 'react-native-sound'
 export interface SavedItemProps {
   readonly label: string
   readonly id: string
-  // readonly playPauseItem: () => void
   readonly setAudioPath: () => void
   readonly isSavedItemPlaying: boolean
   readonly addToCollection: () => void
@@ -25,8 +24,6 @@ export const SavedItem = ({
   addToCollection,
   deleteItem,
 }: SavedItemProps) => {
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false)
-
   return (
     <View style={styles.listItem}>
       <View style={styles.titleContainer}>
