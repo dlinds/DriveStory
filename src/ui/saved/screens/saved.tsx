@@ -23,7 +23,7 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import { SavedItem } from '../atoms/saved_item'
 import { AddToCollectionPopup } from '../molecules/add_to_collection_popup'
 import { SavedStory, StoryCollection } from '../../../../AppStorageUtils'
-import TrackPlayer, { State, Track } from 'react-native-track-player'
+import TrackPlayer, { Event, Track } from 'react-native-track-player'
 import { addTracks } from '../../../../trackPlayerServices'
 
 export const Saved = ({ store, setStore }: StateMutate) => {
@@ -98,6 +98,9 @@ export const Saved = ({ store, setStore }: StateMutate) => {
 
   useEffect(() => {
     getInitialCurrentTrack()
+    TrackPlayer.addEventListener(Event.PlaybackQueueEnded, () =>
+      setCurrentTrack(undefined)
+    )
   }, [])
 
   const handleStartAudio = async (item: SavedStory) => {

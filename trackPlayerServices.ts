@@ -50,5 +50,19 @@ export const addTracks = async (track: Track) => {
 }
 
 export async function playbackService() {
-  // TODO: Attach remote event handlers
+  TrackPlayer.addEventListener(Event.RemotePause, () => {
+    TrackPlayer.pause()
+  })
+
+  TrackPlayer.addEventListener(Event.RemotePlay, () => {
+    TrackPlayer.play()
+  })
+
+  TrackPlayer.addEventListener(Event.RemoteNext, () => {
+    TrackPlayer.skipToNext()
+  })
+
+  TrackPlayer.addEventListener(Event.RemotePrevious, () => {
+    TrackPlayer.skipToPrevious()
+  })
 }
