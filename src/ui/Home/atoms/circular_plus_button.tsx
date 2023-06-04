@@ -8,14 +8,12 @@ import { Typography } from '../../_atoms/typography'
 interface CircularPlusButtonProps {
   readonly actionCallback: () => void
   readonly text?: string
-  readonly customText?: string
   readonly variant?: 'plus' | 'minus'
 }
 
 export const CircularPlusButton = ({
   actionCallback,
   text,
-  customText,
   variant = 'plus',
 }: CircularPlusButtonProps) => {
   return (
@@ -33,11 +31,6 @@ export const CircularPlusButton = ({
         </View>
         {text && <Typography text={text} variant="heading" />}
       </TouchableOpacity>
-      {customText && (
-        <View style={styles.customTextContainer}>
-          <Typography text={customText} />
-        </View>
-      )}
     </View>
   )
 }

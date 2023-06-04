@@ -136,7 +136,9 @@ export const Home = ({ store, setStore }: StateMutate) => {
           isRecording={isRecording && !isPlaying}
           showIndicator={isRecording && !isPlaying}
         />
-        <Typography text="Tell me a children's story about..." />
+        <Typography
+          text={store.customText || "Tell me a children's story about..."}
+        />
         {currentPrompt && <Typography text={`[ ${currentPrompt} ]`} />}
         {currentAction && <Typography text={currentAction} />}
         {isPlaying && <Typography text="Currently playing story" />}
@@ -146,7 +148,6 @@ export const Home = ({ store, setStore }: StateMutate) => {
               actionCallback={() => handleUnselectingItem(option.label)}
               text={option.label}
               key={option.label}
-              customText={store.customText}
               variant="minus"
             />
           ))}
