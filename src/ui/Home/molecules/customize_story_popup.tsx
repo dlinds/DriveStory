@@ -6,8 +6,14 @@ import { scale } from '../../../common/utilities'
 import { appColors } from '../../assets/app_colors'
 import { TextOrNumInput } from '../../_atoms/text_input'
 
+export type CustomizeOptionLabels =
+  | 'Two Characters'
+  | 'Chapters'
+  | 'Use me as the main character'
+  | 'Customize prompt'
+
 export interface CustomizeOption {
-  readonly label: string
+  readonly label: CustomizeOptionLabels
   readonly customAnswer?: boolean
 }
 export interface CustomizeStoryPopupProps {
