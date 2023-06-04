@@ -36,8 +36,16 @@ export const CustomizeStoryPopup = ({
   )
 
   const handleSelection = (option: CustomizeOption) => {
+    console.log('toggle option', option)
+
     if (option.customAnswer) {
-      setSelected([option])
+      setSelected((prev) => {
+        if (prev[0] === option) {
+          setCustomizedText('')
+          return []
+        }
+        return [option]
+      })
       return
     }
     setCustomizedText('')
@@ -56,6 +64,38 @@ export const CustomizeStoryPopup = ({
     setCustomizedText(val || '')
   }
 
+  const placeholdersForCustomPrompts = [
+    'Give me lessons on {topic}',
+    'Tell me an adult story about {topic}',
+    'Summarize the history of {topic}',
+  ]
+
+  const [currentPlaceholder, setCurrentPlaceholder] = useState(
+    placeholdersForCustomPrompts[0]
+  )
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentPlaceholderIndex =
+        placeholdersForCustomPrompts.indexOf(currentPlaceholder)
+
+      setCurrentPlaceholder(
+        currentPlaceholderIndex === placeholdersForCustomPrompts.length - 1
+          ? placeholdersForCustomPrompts[0]
+          : placeholdersForCustomPrompts[currentPlaceholderIndex + 1]
+      )
+    }, 3000)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [currentPlaceholder])
+
+  const handlePressTextBox = (option: CustomizeOption) => {
+    handleSelection(option)
+    setSelected([option])
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.headingContainer}>
@@ -67,40 +107,43 @@ export const CustomizeStoryPopup = ({
             currentlySelectedOptions.filter((i) => i.label === option.label)
               .length > 0 || selected.includes(option)
           return (
-            <TouchableOpacity
-              onPress={() => handleSelection(option)}
-              style={styles.optionContainer}
-              key={index}
-            >
-              <View style={styles.checkmarkRowContainer}>
-                <MaterialCommunityIcon
-                  name={
-                    isItemSelected
-                      ? 'check-circle'
-                      : 'checkbox-blank-circle-outline'
-                  }
-                  size={scale(3)}
-                  color={appColors.primaryPurple}
-                />
-                <Typography
-                  text={option.label}
-                  variant="heading"
-                  textColor={isItemSelected ? undefined : appColors.mediumGray}
-                />
-              </View>
+            <View key={index}>
+              <TouchableOpacity
+                onPress={() => handleSelection(option)}
+                style={styles.optionContainer}
+              >
+                <View style={styles.checkmarkRowContainer}>
+                  <MaterialCommunityIcon
+                    name={
+                      isItemSelected
+                        ? 'check-circle'
+                        : 'checkbox-blank-circle-outline'
+                    }
+                    size={scale(3)}
+                    color={appColors.primaryPurple}
+                  />
+                  <Typography
+                    text={option.label}
+                    variant="heading"
+                    textColor={
+                      isItemSelected ? undefined : appColors.mediumGray
+                    }
+                  />
+                </View>
+              </TouchableOpacity>
               {option.customAnswer && (
                 <View style={styles.customTextContainer}>
                   <TextOrNumInput
                     multiline
                     setValue={handleSetCustomValue}
                     value={currentCustomText}
-                    placeholder="..."
-                    onPressIn={() => handleSelection(option)}
+                    placeholder={currentPlaceholder}
                     disabled={!selected.includes(option)}
+                    onPressIn={() => handlePressTextBox(option)}
                   />
                 </View>
               )}
-            </TouchableOpacity>
+            </View>
           )
         })}
       </View>
@@ -120,7 +163,7 @@ const styles = StyleSheet.create({
     borderRadius: scale(2),
   },
   headingContainer: {
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
   },
   optionContainer: {
     marginTop: scale(2),

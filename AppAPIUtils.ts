@@ -59,10 +59,6 @@ interface queryOpenAiProps {
   readonly store?: Store
 }
 
-const models = {
-  davinci3: 'gpt-3.5-turbo',
-}
-
 const configuration = new Configuration({
   organization: Config.CHAT_GPT_ORG,
   apiKey: Config.CHAT_GPT_KEY,
@@ -74,18 +70,20 @@ export const queryOpenAi = async ({
   prompt,
   max_tokens = 2500,
   temperature = 1,
-  model = models.davinci3,
+  model = 'gpt-3.5-turbo',
   store,
 }: queryOpenAiProps) => {
-  // const generatedPrompt = constructPrompt(store, prompt)
-  // console.log({ generatedPrompt })
+  const submittedPrompt = store?.customText
+    ? `${store?.customText} ${prompt}`
+    : prompt
+
   try {
     const resp = await openAiConfig.createChatCompletion({
       model,
       messages: [
         {
           role: 'user',
-          content: prompt,
+          content: submittedPrompt,
         },
       ],
       max_tokens,
