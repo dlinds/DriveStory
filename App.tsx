@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, ScrollView, StatusBar } from 'react-native'
+import { SafeAreaView, ScrollView, StatusBar, StyleSheet } from 'react-native'
 import { initialState, Store } from './AppStateMutate'
 import { handleGetStoreFromState } from './AppStorageUtils'
 import { appColors } from './src/ui/assets/app_colors'
@@ -36,7 +36,7 @@ const App = (): JSX.Element => {
   }
 
   return (
-    <SafeAreaView style={{ backgroundColor: appColors.darkGray }}>
+    <SafeAreaView style={styles.container}>
       <StatusBar
         barStyle="light-content"
         backgroundColor={appColors.darkGray}
@@ -49,3 +49,10 @@ const App = (): JSX.Element => {
 }
 
 export default App
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: appColors.darkGray,
+  },
+})

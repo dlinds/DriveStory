@@ -82,7 +82,7 @@ export const queryOpenAi = async ({
   try {
     const resp = await openAiConfig.createCompletion({
       model,
-      prompt: `Tell me a five sentence childrens story that includes the topics: ${prompt}`,
+      prompt: `Tell me a children's story about ${prompt}. It should be exactly six paragraphs long, with short sentences in each paragraph. This is for an API app, and needs to returned as JSON, with the format { description: string, storyParagraphs: string[] }`,
       max_tokens,
       temperature,
     })

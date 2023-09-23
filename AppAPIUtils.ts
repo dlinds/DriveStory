@@ -1,8 +1,9 @@
 import Config from 'react-native-config'
 import RNFS from 'react-native-fs'
 import { handleSaveFileToDevice } from './AppStorageUtils'
-import { Configuration, OpenAIApi } from 'openai'
+import { Configuration, CreateChatCompletionResponse, OpenAIApi } from 'openai'
 import { Store } from './AppStateMutate'
+import { AxiosResponse } from 'axios'
 
 export const handleGenerateAndSaveStory = async (
   story: string
@@ -70,29 +71,50 @@ export const queryOpenAi = async ({
   prompt,
   max_tokens = 2500,
   temperature = 1,
-  model = 'gpt-3.5-turbo',
+  model = 'gpt-4',
   store,
-}: queryOpenAiProps) => {
+}: queryOpenAiProps): Promise<string | undefined> => {
   const submittedPrompt = store?.customText
     ? `${store?.customText} ${prompt}`
     : prompt
 
+  console.log('ChatGPT Request', { submittedPrompt })
   try {
     const resp = await openAiConfig.createChatCompletion({
       model,
       messages: [
         {
           role: 'user',
-          content: submittedPrompt,
+          content: `Tell me a children's story about ${submittedPrompt}. It should be exactly six paragraphs long, with short sentences in each paragraph. This is for an API app, and needs to returned as JSON, with the format { description: string, storyParagraphs: string[] }`,
         },
       ],
       max_tokens,
       temperature,
     })
     console.log('ChatGPT Response Successful')
-    return resp
+    console.log(resp.data.choices[0].message?.content)
+    return resp.data.choices[0].message?.content
   } catch (e) {
     console.error({ queryOpenAi: e })
     throw e
   }
+}
+
+const example = {
+  description:
+    "A children's story about a unique bunny named Spiky who was born with porcupine spikes. The story is designed to teach children the importance of embracing uniqueness and encouraging tolerance and acceptance.",
+
+  storyParagraphs: [
+    'The forest was home to a special bunny named Spiky. Unlike other bunnies, Spiky was born with porcupine spikes. He was different and he knew it.',
+
+    "Spiky was often alone because other bunnies were afraid of his spikes. He didn't have bunny friends to play with. This made Spiky very sad.",
+
+    "One day, a pack of wolves invaded the forest. All the animals ran away. However, Spiky couldn't run as fast as the others.",
+
+    'The wolves saw Spiky and planned to hurt him. Spiky was frightened but then, a surprising thing occurred. His spikes rose in defense.',
+
+    "The wolves were taken aback and quickly retreated. They couldn't harm Spiky because of his spikes. The bunny that was once afraid, stood bravely.",
+
+    'After that day, all the animals in the forest looked at Spiky differently. They began to appreciate his unique spikes. Spiky was not only accepted but also admired. His difference made him special.',
+  ],
 }

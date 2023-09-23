@@ -91,8 +91,7 @@ export const Home = ({ store, setStore }: StateMutate) => {
   const handleCallOpenAI = async (prompt: string) => {
     setIsRecording(false)
     setCurrentAction('writing a story')
-    const storyResult = (await queryOpenAi({ prompt, store })).data.choices[0]
-      .message?.content
+    const storyResult = await queryOpenAi({ prompt, store })
     if (storyResult) {
       await handleCallGoogle(storyResult, prompt)
     }
@@ -126,13 +125,13 @@ export const Home = ({ store, setStore }: StateMutate) => {
     >
       <View style={styles.container}>
         <RecordButton
-          setIsRecording={() => handleStartRecording()}
+          // setIsRecording={() => handleStartRecording()}
           // manual prompt generation for dev
-          // setIsRecording={() => {
-          //   console.log('recording')
-          //   setCurrentPrompt('a bunny with porcupine spikes')
-          //   handleCallOpenAI('a bunny with porcupine spikes')
-          // }}
+          setIsRecording={() => {
+            console.log('recording')
+            setCurrentPrompt('a bunny with porcupine spikes')
+            handleCallOpenAI('a bunny with porcupine spikes')
+          }}
           isRecording={isRecording && !isPlaying}
           showIndicator={isRecording && !isPlaying}
         />
