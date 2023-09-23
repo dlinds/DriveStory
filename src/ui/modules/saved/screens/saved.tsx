@@ -14,17 +14,17 @@ import {
   removeStoryToCollection,
   Screens,
   StateMutate,
-} from '../../../../AppStateMutate'
-import { scale } from '../../../common/utilities'
-import { AppContainer } from '../../app_container/screens/app_container'
-import { appColors } from '../../assets/app_colors'
-import { Typography } from '../../_atoms/typography'
+} from '../../../../../AppStateMutate'
+import { scale } from '../../../../common/utilities'
+import { AppContainer } from '../../../components/app_container/screens/app_container'
+import { appColors } from '../../../assets/app_colors'
+import { Typography } from '../../../components/typography'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { SavedItem } from '../atoms/saved_item'
 import { AddToCollectionPopup } from '../molecules/add_to_collection_popup'
-import { SavedStory, StoryCollection } from '../../../../AppStorageUtils'
+import { SavedStory, StoryCollection } from '../../../../../AppStorageUtils'
 import TrackPlayer, { Event, Track } from 'react-native-track-player'
-import { addTracks } from '../../../../trackPlayerServices'
+import { addTracks } from '../../../../../trackPlayerServices'
 
 export const Saved = ({ store, setStore }: StateMutate) => {
   const [filteredCollection, setFilteredCollection] = useState<

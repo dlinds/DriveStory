@@ -1,17 +1,17 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { scale } from '../../../common/utilities'
-import { AppContainer } from '../../app_container/screens/app_container'
-import { appColors } from '../../assets/app_colors'
-import { Logo } from '../../_atoms/logo'
-import { Typography } from '../../_atoms/typography'
+import { scale } from '../../../../common/utilities'
+import { AppContainer } from '../../../components/app_container/screens/app_container'
+import { appColors } from '../../../assets/app_colors'
+import { Logo } from '../../../components/logo'
+import { Typography } from '../../../components/typography'
 import { LoginForm } from '../molecules/login_form'
 import { RegisterForm } from '../molecules/register_form'
 import {
   StateMutate,
   handleNavigate,
   Screens,
-} from '../../../../AppStateMutate'
+} from '../../../../../AppStateMutate'
 
 type ActiveView = 'login' | 'register' | 'start'
 

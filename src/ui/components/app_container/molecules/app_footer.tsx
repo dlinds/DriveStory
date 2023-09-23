@@ -1,10 +1,10 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { scale } from '../../../common/utilities'
-import { appColors } from '../../assets/app_colors'
+import { scale } from '../../../../common/utilities'
+import { appColors } from '../../../assets/app_colors'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import { Screens } from '../../../../AppStateMutate'
+import { Screens } from '../../../../../AppStateMutate'
 interface AppFooterProp {
   readonly navigate: (screen: Screens) => void
 }

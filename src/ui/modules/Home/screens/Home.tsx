@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { scale } from '../../../../common/utilities'
-import { AppContainer } from '../../../app_container/screens/app_container'
-import { Typography } from '../../../_atoms/typography'
+import { AppContainer } from '../../../components/app_container/screens/app_container'
+import { Typography } from '../../../components/typography'
 import { RecordButton } from '../atoms/record_button'
 import {
   CustomizeOption,

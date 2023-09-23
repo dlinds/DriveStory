@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { scale } from '../../../common/utilities'
-import { appColors } from '../../assets/app_colors'
-import { Typography } from '../../_atoms/typography'
+import { scale } from '../../../../common/utilities'
+import { appColors } from '../../../assets/app_colors'
+import { Typography } from '../../../components/typography'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Sound from 'react-native-sound'
 

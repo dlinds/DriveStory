@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { scale } from '../../../../common/utilities'
 import { appColors } from '../../../assets/app_colors'
-import { Typography } from '../../../_atoms/typography'
+import { Typography } from '../../../components/typography'
 
 interface CircularPlusButtonProps {
   readonly actionCallback: () => void

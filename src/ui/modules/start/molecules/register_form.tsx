@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
-import { scale } from '../../../common/utilities'
-import { Button } from '../../_atoms/button'
-import { TextOrNumInput } from '../../_atoms/text_input'
-import { Typography } from '../../_atoms/typography'
+import { scale } from '../../../../common/utilities'
+import { Button } from '../../../components/button'
+import { TextOrNumInput } from '../../../components/text_input'
+import { Typography } from '../../../components/typography'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { appColors } from '../../assets/app_colors'
+import { appColors } from '../../../assets/app_colors'
 
 export interface RegisterFormProps {
   readonly registerCallback: () => void

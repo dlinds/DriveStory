@@ -4,8 +4,8 @@ import { initialState, Store } from './AppStateMutate'
 import { handleGetStoreFromState } from './AppStorageUtils'
 import { appColors } from './src/ui/assets/app_colors'
 import { Home } from './src/ui/modules/Home/screens/Home'
-import { Saved } from './src/ui/saved/screens/saved'
-import { Start } from './src/ui/start/screens/start'
+import { Saved } from './src/ui/modules/saved/screens/saved'
+import { Start } from './src/ui/modules/start/screens/start'
 import { setupPlayer } from './trackPlayerServices'
 
 const App = (): JSX.Element => {

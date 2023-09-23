@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View } from 'react-native'
-import { SavedStory, StoryCollection } from '../../../../AppStorageUtils'
+import { SavedStory, StoryCollection } from '../../../../../AppStorageUtils'
 import { SavedItem, SavedItemProps } from './saved_item'
 
 const args: SavedItemProps = {

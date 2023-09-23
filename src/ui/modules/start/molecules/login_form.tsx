@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { scale } from '../../../common/utilities'
-import { Button } from '../../_atoms/button'
-import { TextOrNumInput } from '../../_atoms/text_input'
+import { scale } from '../../../../common/utilities'
+import { Button } from '../../../components/button'
+import { TextOrNumInput } from '../../../components/text_input'
 
 export interface LoginFormProps {
   readonly loginCallback: () => void

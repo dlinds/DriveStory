@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Typography } from '../../_atoms/typography'
-import { scale } from '../../../common/utilities'
-import { appColors } from '../../assets/app_colors'
-import { SavedStory, StoryCollection } from '../../../../AppStorageUtils'
-import { TextOrNumInput } from '../../_atoms/text_input'
+import { Typography } from '../../../components/typography'
+import { scale } from '../../../../common/utilities'
+import { appColors } from '../../../assets/app_colors'
+import { SavedStory, StoryCollection } from '../../../../../AppStorageUtils'
+import { TextOrNumInput } from '../../../components/text_input'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 export interface AddToCollectionPopupProps {

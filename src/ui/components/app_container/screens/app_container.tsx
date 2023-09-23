@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { Dimensions, Pressable, StyleSheet, View } from 'react-native'
-import { Screens } from '../../../../AppStateMutate'
-import { scale } from '../../../common/utilities'
+import { Screens } from '../../../../../AppStateMutate'
+import { scale } from '../../../../common/utilities'
 import { AppFooter } from '../molecules/app_footer'
 export interface AppContainerProps {
   readonly children: ReactElement

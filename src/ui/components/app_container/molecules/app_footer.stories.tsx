@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { scale } from '../../../common/utilities'
+import { scale } from '../../../../common/utilities'
 import { AppFooter } from './app_footer'
 
 const AppFooterMeta = {
