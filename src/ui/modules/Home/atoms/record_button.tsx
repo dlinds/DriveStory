@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { scale } from '../../../common/utilities'
-import { appColors } from '../../assets/app_colors'
+import { scale } from '../../../../common/utilities'
+import { appColors } from '../../../assets/app_colors'
 
 export interface RecordButtonProps {
   readonly setIsRecording: (value: boolean) => void

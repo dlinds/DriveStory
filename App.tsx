@@ -3,7 +3,7 @@ import { SafeAreaView, ScrollView, StatusBar } from 'react-native'
 import { initialState, Store } from './AppStateMutate'
 import { handleGetStoreFromState } from './AppStorageUtils'
 import { appColors } from './src/ui/assets/app_colors'
-import { Home } from './src/ui/Home/screens/home'
+import { Home } from './src/ui/modules/Home/screens/Home'
 import { Saved } from './src/ui/saved/screens/saved'
 import { Start } from './src/ui/start/screens/start'
 import { setupPlayer } from './trackPlayerServices'
@@ -14,21 +14,14 @@ const App = (): JSX.Element => {
   useEffect(() => {
     const storeFromLocalStore = async () => {
       await setupPlayer()
-      await handleGetStoreFromState().then((res) =>
-        setStore({
-          ...res,
-        })
-      )
+      const store = await handleGetStoreFromState()
+      setStore(store)
     }
     storeFromLocalStore()
   }, [])
 
   const getCurrentScreen = () => {
-    const state = { store: store, setStore: setStore }
-
-    useEffect(() => {
-      console.log('store was updated')
-    }, [store])
+    const state = { store, setStore: setStore }
 
     switch (store.currentScreen) {
       case 'home':
@@ -56,4 +49,3 @@ const App = (): JSX.Element => {
 }
 
 export default App
-// export { default } from './.storybook'

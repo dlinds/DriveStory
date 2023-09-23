@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { scale } from '../../../common/utilities'
-import { AppContainer } from '../../app_container/screens/app_container'
-import { Typography } from '../../_atoms/typography'
+import { scale } from '../../../../common/utilities'
+import { AppContainer } from '../../../app_container/screens/app_container'
+import { Typography } from '../../../_atoms/typography'
 import { RecordButton } from '../atoms/record_button'
 import {
   CustomizeOption,
@@ -15,15 +15,15 @@ import {
   setCustomizedText,
   setSelectedCustomized,
   StateMutate,
-} from '../../../../AppStateMutate'
+} from '../../../../../AppStateMutate'
 import { CircularPlusButton } from '../atoms/circular_plus_button'
 import {
   handleGenerateAndSaveStory,
   queryOpenAi,
-} from '../../../../AppAPIUtils'
+} from '../../../../../AppAPIUtils'
 import Voice, { SpeechResultsEvent } from '@react-native-voice/voice'
 import TrackPlayer, { Track } from 'react-native-track-player'
-import { addTracks } from '../../../../trackPlayerServices'
+import { addTracks } from '../../../../../trackPlayerServices'
 import { usePlaybackState, State } from 'react-native-track-player'
 
 export const Home = ({ store, setStore }: StateMutate) => {

@@ -28,6 +28,7 @@
 		377A2CDA29B794020099B3FA /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 377A2CCA29B794020099B3FA /* EvilIcons.ttf */; };
 		377A2CDB29B794020099B3FA /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 377A2CCB29B794020099B3FA /* SimpleLineIcons.ttf */; };
 		377A2CDC29B794020099B3FA /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 377A2CCC29B794020099B3FA /* MaterialIcons.ttf */; };
+		37A5DA7C2ABE6B9600B7BD48 /* blank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A5DA7B2ABE6B9600B7BD48 /* blank.swift */; };
 		7699B88040F8A987B510C191 /* libPods-drivestory-drivestoryTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-drivestory-drivestoryTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -69,6 +70,8 @@
 		377A2CCA29B794020099B3FA /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = EvilIcons.ttf; sourceTree = "<group>"; };
 		377A2CCB29B794020099B3FA /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SimpleLineIcons.ttf; sourceTree = "<group>"; };
 		377A2CCC29B794020099B3FA /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
+		37A5DA7A2ABE6B9500B7BD48 /* drivestory-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "drivestory-Bridging-Header.h"; sourceTree = "<group>"; };
+		37A5DA7B2ABE6B9600B7BD48 /* blank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = blank.swift; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-drivestory.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-drivestory.debug.xcconfig"; path = "Target Support Files/Pods-drivestory/Pods-drivestory.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-drivestory.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-drivestory.release.xcconfig"; path = "Target Support Files/Pods-drivestory/Pods-drivestory.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-drivestory-drivestoryTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-drivestory-drivestoryTests.debug.xcconfig"; path = "Target Support Files/Pods-drivestory-drivestoryTests/Pods-drivestory-drivestoryTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -124,6 +127,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				37A5DA7B2ABE6B9600B7BD48 /* blank.swift */,
+				37A5DA7A2ABE6B9500B7BD48 /* drivestory-Bridging-Header.h */,
 			);
 			name = drivestory;
 			sourceTree = "<group>";
@@ -264,7 +269,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1500;
 					};
 				};
 			};
@@ -486,6 +491,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				37A5DA7C2ABE6B9600B7BD48 /* blank.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -505,6 +511,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-drivestory-drivestoryTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -532,6 +539,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-drivestory-drivestoryTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = drivestoryTests/Info.plist;
@@ -573,6 +581,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = drivestory;
+				SWIFT_OBJC_BRIDGING_HEADER = "drivestory-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -599,6 +608,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = drivestory;
+				SWIFT_OBJC_BRIDGING_HEADER = "drivestory-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

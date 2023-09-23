@@ -34,10 +34,6 @@ export const handleGetStoreFromState = async (): Promise<Store> => {
   const store: string = await RNFS.readFile(
     RNFS.DocumentDirectoryPath + '/store.txt'
   )
-    .then((result: string) => {
-      return Promise.resolve(result)
-    })
-    .catch((e) => e)
   return JSON.parse(store)
 }
 

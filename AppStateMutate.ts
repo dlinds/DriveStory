@@ -4,7 +4,7 @@ import {
   SavedStory,
   StoryCollection,
 } from './AppStorageUtils'
-import { CustomizeOption } from './src/ui/Home/molecules/customize_story_popup'
+import { CustomizeOption } from './src/ui/modules/Home/molecules/customize_story_popup'
 import 'react-native-get-random-values'
 import { v4 as uuidv4 } from 'uuid'
 

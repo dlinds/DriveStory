@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Typography } from '../../_atoms/typography'
+import { Typography } from '../../../_atoms/typography'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { scale } from '../../../common/utilities'
-import { appColors } from '../../assets/app_colors'
-import { TextOrNumInput } from '../../_atoms/text_input'
+import { scale } from '../../../../common/utilities'
+import { appColors } from '../../../assets/app_colors'
+import { TextOrNumInput } from '../../../_atoms/text_input'
 
 export type CustomizeOptionLabels =
   | 'Two Characters'
